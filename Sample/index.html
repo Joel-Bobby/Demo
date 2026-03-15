@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoVault — Cryptocurrency Investment Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #112244;
+    --navy-light: #1E3A6E;
+    --blue: #1B4FD8;
+    --blue-light: #3B6FE8;
+    --gold: #C8952A;
+    --gold-light: #E8B84B;
+    --gold-pale: #FDF5E4;
+    --white: #FFFFFF;
+    --gray-50: #F8F9FC;
+    --gray-100: #EEF0F5;
+    --gray-200: #D8DCE8;
+    --gray-400: #8B92A8;
+    --gray-600: #4A5068;
+    --gray-800: #1F2440;
+    --green: #1A7A4A;
+    --green-light: #22A862;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --shadow-sm: 0 1px 4px rgba(10,22,40,0.08);
+    --shadow-md: 0 4px 16px rgba(10,22,40,0.12);
+    --shadow-lg: 0 12px 40px rgba(10,22,40,0.16);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); color: var(--gray-800); background: var(--white); line-height: 1.6; }
+  h1,h2,h3,h4,h5,h6 { font-family: var(--font-display); }
+
+  /* ============ PAGES ============ */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ============ NAV ============ */
+  .navbar {
+    position: sticky; top: 0; z-index: 1000;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+  }
+  .nav-logo {
+    font-family: var(--font-display); font-size: 22px; font-weight: 800;
+    color: var(--navy); cursor: pointer; display: flex; align-items: center; gap: 10px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 36px; height: 36px; background: var(--navy); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-icon svg { width: 20px; height: 20px; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; color: var(--gray-600);
+    text-decoration: none; transition: color 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--navy); }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .btn { cursor: pointer; border: none; border-radius: var(--radius-md); font-family: var(--font-body); font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+  .btn-sm { padding: 8px 18px; font-size: 13px; }
+  .btn-md { padding: 12px 24px; font-size: 14px; }
+  .btn-lg { padding: 14px 32px; font-size: 15px; }
+  .btn-primary { background: var(--navy); color: var(--white); }
+  .btn-primary:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-secondary { background: transparent; color: var(--navy); border: 1.5px solid var(--gray-200); }
+  .btn-secondary:hover { border-color: var(--navy); background: var(--gray-50); }
+  .btn-gold { background: var(--gold); color: var(--white); }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn-outline-white { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.4); }
+  .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; transition: all 0.3s; }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--navy);
+    padding: 100px 5% 120px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(27,79,216,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -80px; left: 20%;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,149,42,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 680px; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(200,149,42,0.15); border: 1px solid rgba(200,149,42,0.3);
+    border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
+  }
+  .hero-badge-dot { width: 6px; height: 6px; background: var(--gold-light); border-radius: 50%; }
+  .hero-badge span { font-size: 12px; color: var(--gold-light); font-weight: 500; letter-spacing: 0.5px; }
+  .hero h1 { font-size: clamp(36px, 5vw, 60px); font-weight: 800; color: var(--white); line-height: 1.1; margin-bottom: 24px; }
+  .hero h1 em { color: var(--gold-light); font-style: normal; }
+  .hero p { font-size: 17px; color: rgba(255,255,255,0.7); max-width: 520px; margin-bottom: 40px; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: 48px; margin-top: 64px; padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hero-stat-num { font-family: var(--font-display); font-size: 30px; font-weight: 700; color: var(--white); }
+  .hero-stat-label { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* ============ SECTIONS ============ */
+  .section { padding: 80px 5%; }
+  .section-bg { background: var(--gray-50); }
+  .section-dark { background: var(--navy); color: var(--white); }
+  .section-center { text-align: center; }
+  .section-tag {
+    display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+  }
+  .section-title { font-size: clamp(26px, 3.5vw, 40px); font-weight: 700; color: var(--navy); margin-bottom: 16px; }
+  .section-dark .section-title { color: var(--white); }
+  .section-subtitle { font-size: 16px; color: var(--gray-600); max-width: 560px; }
+  .section-center .section-subtitle { margin: 0 auto; }
+  .section-dark .section-subtitle { color: rgba(255,255,255,0.6); }
+
+  /* ============ CARDS ============ */
+  .card {
+    background: var(--white); border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-200); padding: 28px; transition: all 0.25s;
+  }
+  .card:hover { border-color: var(--blue-light); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .card-icon {
+    width: 48px; height: 48px; border-radius: var(--radius-md);
+    background: var(--navy); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .card-icon svg { width: 22px; height: 22px; stroke: var(--white); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 10px; color: var(--navy); }
+  .card p { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+  /* ============ FOOTER ============ */
+  .footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 64px 5% 0; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; }
+  .footer-brand p { font-size: 14px; margin: 16px 0 24px; max-width: 260px; }
+  .footer-social { display: flex; gap: 12px; }
+  .footer-social a {
+    width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5); text-decoration: none; font-size: 13px; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .footer-social a:hover { border-color: var(--gold); color: var(--gold); background: rgba(200,149,42,0.1); }
+  .footer-col h4 { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 16px; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 14px; transition: color 0.2s; cursor: pointer; }
+  .footer-col ul a:hover { color: var(--white); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 24px 0; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+  .footer-bottom-links { display: flex; gap: 24px; }
+  .footer-bottom-links a { color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+  .footer-bottom-links a:hover { color: rgba(255,255,255,0.7); }
+
+  /* ============ AUTH PAGES ============ */
+  .auth-container {
+    min-height: calc(100vh - 70px);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--gray-50); padding: 40px 20px;
+  }
+  .auth-box {
+    background: var(--white); border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-200); padding: 48px;
+    width: 100%; max-width: 480px; box-shadow: var(--shadow-lg);
+  }
+  .auth-box h2 { font-size: 26px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .auth-box p { font-size: 14px; color: var(--gray-400); margin-bottom: 32px; }
+  .form-group { margin-bottom: 18px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--gray-600); margin-bottom: 6px; }
+  .form-control {
+    width: 100%; padding: 11px 14px; border-radius: var(--radius-md);
+    border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 14px;
+    color: var(--gray-800); background: var(--white); transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-control:focus { border-color: var(--blue); }
+  .form-control::placeholder { color: var(--gray-400); }
+  .form-divider { text-align: center; font-size: 13px; color: var(--gray-400); margin: 20px 0; }
+  .auth-link { color: var(--blue); text-decoration: none; font-weight: 500; cursor: pointer; }
+  .auth-link:hover { text-decoration: underline; }
+
+  /* ============ DASHBOARD ============ */
+  .dashboard-layout { display: flex; min-height: calc(100vh - 70px); }
+  .sidebar {
+    width: 240px; background: var(--navy); padding: 24px 0;
+    display: flex; flex-direction: column; position: sticky; top: 70px; height: calc(100vh - 70px);
+    overflow-y: auto; flex-shrink: 0;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 12px; padding: 11px 24px;
+    color: rgba(255,255,255,0.55); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
+    text-decoration: none;
+  }
+  .sidebar-item:hover { color: var(--white); background: rgba(255,255,255,0.05); }
+  .sidebar-item.active { color: var(--white); background: rgba(255,255,255,0.08); border-left-color: var(--gold); }
+  .sidebar-item svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .sidebar-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 24px; }
+  .sidebar-label { padding: 8px 24px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.25); font-weight: 600; }
+  .dash-content { flex: 1; padding: 36px 40px; background: var(--gray-50); overflow-y: auto; }
+  .dash-header { margin-bottom: 32px; }
+  .dash-header h1 { font-size: 24px; font-weight: 700; color: var(--navy); }
+  .dash-header p { color: var(--gray-400); font-size: 14px; margin-top: 4px; }
+  .dash-section { display: none; }
+  .dash-section.active { display: block; }
+  .stat-card {
+    background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200);
+    padding: 22px 24px;
+  }
+  .stat-card-label { font-size: 12px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .stat-card-value { font-size: 28px; font-weight: 700; font-family: var(--font-display); color: var(--navy); }
+  .stat-card-sub { font-size: 13px; color: var(--gray-400); margin-top: 4px; }
+  .badge {
+    display: inline-block; padding: 3px 10px; border-radius: 100px;
+    font-size: 12px; font-weight: 500;
+  }
+  .badge-green { background: #E6F7EF; color: #1A7A4A; }
+  .badge-blue { background: #EBF1FD; color: #1B4FD8; }
+  .badge-gold { background: var(--gold-pale); color: var(--gold); }
+  .badge-gray { background: var(--gray-100); color: var(--gray-600); }
+  .badge-red { background: #FDEBEB; color: #C0392B; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table th { text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-400); padding: 10px 16px; border-bottom: 1px solid var(--gray-200); }
+  .data-table td { padding: 14px 16px; font-size: 14px; color: var(--gray-800); border-bottom: 1px solid var(--gray-100); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--gray-50); }
+  .msg-thread { display: flex; flex-direction: column; gap: 16px; }
+  .msg-bubble { padding: 14px 18px; border-radius: var(--radius-lg); max-width: 75%; }
+  .msg-bubble.user { background: var(--navy); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .msg-bubble.admin { background: var(--white); color: var(--gray-800); border: 1px solid var(--gray-200); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .msg-bubble p { font-size: 14px; line-height: 1.6; }
+  .msg-bubble small { font-size: 11px; opacity: 0.6; display: block; margin-top: 4px; }
+  .msg-input-row { display: flex; gap: 10px; margin-top: 20px; }
+  .msg-input-row textarea { flex: 1; padding: 12px 14px; border-radius: var(--radius-md); border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 14px; resize: none; outline: none; }
+  .msg-input-row textarea:focus { border-color: var(--blue); }
+
+  /* ============ BLOG ============ */
+  .blog-card {
+    background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200);
+    overflow: hidden; transition: all 0.25s; cursor: pointer;
+  }
+  .blog-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .blog-img { width: 100%; height: 200px; object-fit: cover; background: var(--gray-200); display: flex; align-items: center; justify-content: center; }
+  .blog-img-placeholder { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); height: 200px; display: flex; align-items: center; justify-content: center; }
+  .blog-img-placeholder svg { width: 40px; height: 40px; stroke: rgba(255,255,255,0.3); fill: none; stroke-width: 1.5; }
+  .blog-body { padding: 22px; }
+  .blog-cat { font-size: 12px; font-weight: 600; color: var(--gold); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .blog-title { font-size: 17px; font-weight: 600; color: var(--navy); margin-bottom: 10px; line-height: 1.4; }
+  .blog-excerpt { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 16px; }
+  .blog-meta { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--gray-400); }
+  .blog-meta-dot { width: 3px; height: 3px; background: var(--gray-400); border-radius: 50%; }
+
+  /* ============ TESTIMONIALS ============ */
+  .testimonial {
+    background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200);
+    padding: 28px; position: relative;
+  }
+  .testimonial-quote { font-size: 40px; line-height: 1; color: var(--gold-light); font-family: Georgia, serif; margin-bottom: 12px; }
+  .testimonial p { font-size: 15px; color: var(--gray-600); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; }
+  .testimonial-avatar {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--white);
+  }
+  .testimonial-name { font-weight: 600; font-size: 14px; color: var(--navy); }
+  .testimonial-role { font-size: 12px; color: var(--gray-400); }
+
+  /* ============ HOW IT WORKS ============ */
+  .steps { display: flex; gap: 0; align-items: flex-start; }
+  .step { flex: 1; text-align: center; position: relative; }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute; top: 24px; right: -50%; width: 100%; height: 2px;
+    background: var(--gray-200);
+  }
+  .step-num {
+    width: 48px; height: 48px; border-radius: 50%; background: var(--navy);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+    font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--white);
+    position: relative; z-index: 1;
+  }
+  .step h4 { font-size: 15px; font-weight: 600; color: var(--navy); margin-bottom: 8px; }
+  .step p { font-size: 13px; color: var(--gray-600); padding: 0 12px; }
+
+  /* ============ NOTIFICATION ============ */
+  .notification {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    background: var(--navy); color: var(--white); border-radius: var(--radius-md);
+    padding: 14px 20px; font-size: 14px; box-shadow: var(--shadow-lg);
+    transform: translateY(100px); opacity: 0; transition: all 0.3s;
+    max-width: 320px;
+  }
+  .notification.show { transform: translateY(0); opacity: 1; }
+  .notification.success { background: var(--green); }
+  .notification.error { background: #C0392B; }
+
+  /* ============ MODAL ============ */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(10,22,40,0.7);
+    z-index: 2000; align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--white); border-radius: var(--radius-xl); padding: 36px;
+    width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px; width: 32px; height: 32px;
+    border: none; background: var(--gray-100); border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--gray-600);
+  }
+  .modal h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 20px; }
+
+  /* ============ MISC HELPERS ============ */
+  .divider { height: 1px; background: var(--gray-200); margin: 32px 0; }
+  .tag { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 100px; background: var(--gray-100); font-size: 12px; color: var(--gray-600); font-weight: 500; }
+  .breadcrumb { font-size: 13px; color: var(--gray-400); margin-bottom: 24px; }
+  .breadcrumb span { color: var(--navy); }
+  .plan-card {
+    background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200);
+    padding: 24px; text-align: center;
+  }
+  .plan-card.featured { border-color: var(--gold); background: var(--gold-pale); }
+  .plan-card h3 { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .plan-card .plan-rate { font-size: 32px; font-weight: 800; font-family: var(--font-display); color: var(--navy); }
+  .plan-card .plan-sub { font-size: 12px; color: var(--gray-400); margin-bottom: 16px; }
+  .plan-features { list-style: none; text-align: left; margin-bottom: 20px; }
+  .plan-features li { padding: 8px 0; font-size: 14px; color: var(--gray-600); border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; gap: 10px; }
+  .plan-features li::before { content: ''; width: 16px; height: 16px; background: var(--green-light); border-radius: 50%; flex-shrink: 0; display: block; }
+  .contact-info-item { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--gray-100); }
+  .contact-info-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--navy); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .contact-info-icon svg { width: 18px; height: 18px; stroke: var(--white); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .cookie-banner {
+    position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy-mid);
+    padding: 16px 5%; display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; z-index: 999; border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .cookie-banner p { font-size: 13px; color: rgba(255,255,255,0.75); }
+  .cookie-banner a { color: var(--gold-light); text-decoration: underline; }
+  .newsletter-row { display: flex; gap: 10px; margin-top: 20px; }
+  .newsletter-row input { flex: 1; padding: 12px 16px; border-radius: var(--radius-md); border: 1.5px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: var(--white); font-family: var(--font-body); font-size: 14px; outline: none; }
+  .newsletter-row input::placeholder { color: rgba(255,255,255,0.4); }
+  .newsletter-row input:focus { border-color: var(--gold); }
+  .table-card { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200); overflow: hidden; }
+  .table-card-header { padding: 18px 24px; border-bottom: 1px solid var(--gray-100); display: flex; align-items: center; justify-content: space-between; }
+  .table-card-header h3 { font-size: 15px; font-weight: 600; color: var(--navy); }
+  .table-wrapper { overflow-x: auto; }
+  .input-group { position: relative; }
+  .input-group input { padding-left: 36px; }
+  .input-group-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 13px; }
+  .admin-tab-bar { display: flex; gap: 0; border-bottom: 1px solid var(--gray-200); margin-bottom: 24px; }
+  .admin-tab { padding: 10px 20px; font-size: 14px; font-weight: 500; color: var(--gray-400); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .admin-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+  .admin-tab:hover { color: var(--navy); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .textarea-control { width: 100%; padding: 11px 14px; border-radius: var(--radius-md); border: 1.5px solid var(--gray-200); font-family: var(--font-body); font-size: 14px; color: var(--gray-800); background: var(--white); transition: border-color 0.2s; outline: none; resize: vertical; min-height: 100px; }
+  .textarea-control:focus { border-color: var(--blue); }
+  .faq-item { border-bottom: 1px solid var(--gray-200); }
+  .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; cursor: pointer; font-size: 15px; font-weight: 500; color: var(--navy); }
+  .faq-question svg { width: 18px; height: 18px; stroke: var(--gray-400); fill: none; stroke-width: 2; transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item.open .faq-question svg { transform: rotate(180deg); }
+  .faq-answer { font-size: 14px; color: var(--gray-600); line-height: 1.7; padding-bottom: 20px; display: none; }
+  .faq-item.open .faq-answer { display: block; }
+  .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--white); flex-shrink: 0; }
+  .avatar-lg { width: 64px; height: 64px; font-size: 20px; }
+  select.form-control { appearance: none; cursor: pointer; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .nav-links, .nav-actions .btn-secondary { display: none; }
+    .hamburger { display: flex; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero { padding: 60px 5% 80px; }
+    .hero-stats { gap: 28px; }
+    .steps { flex-direction: column; gap: 32px; align-items: center; }
+    .step::after { display: none; }
+    .sidebar { width: 100%; height: auto; position: static; flex-direction: row; overflow-x: auto; padding: 0; }
+    .sidebar-label, .sidebar-divider { display: none; }
+    .sidebar-item { padding: 14px 16px; white-space: nowrap; border-left: none; border-bottom: 3px solid transparent; }
+    .sidebar-item.active { border-bottom-color: var(--gold); border-left: none; }
+    .dashboard-layout { flex-direction: column; }
+    .dash-content { padding: 24px 16px; }
+    .form-row { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .msg-bubble { max-width: 90%; }
+    .modal { padding: 24px; }
+    .auth-box { padding: 32px 24px; }
+  }
+  @media (max-width: 480px) {
+    .hero-actions { flex-direction: column; }
+    .grid-4 { grid-template-columns: 1fr; }
+    .newsletter-row { flex-direction: column; }
+    .msg-input-row { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NOTIFICATION ===== -->
+<div class="notification" id="notification"></div>
+
+<!-- ===== COOKIE BANNER ===== -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>We use cookies to enhance your experience. By continuing to use this site, you agree to our <a onclick="showPage('privacy')">Privacy Policy</a>.</p>
+  <div style="display:flex;gap:10px;">
+    <button class="btn btn-sm btn-outline-white" onclick="dismissCookie()">Decline</button>
+    <button class="btn btn-sm btn-gold" onclick="dismissCookie()">Accept Cookies</button>
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <a class="nav-logo" onclick="showPage('landing')">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+      </svg>
+    </div>
+    CryptoVault
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('about')">About</a></li>
+    <li><a onclick="showPage('services')">Services</a></li>
+    <li><a onclick="showPage('blog')">Blog</a></li>
+    <li><a onclick="showPage('contact')">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn btn-sm btn-secondary" id="navLoginBtn" onclick="showPage('login')">Sign In</button>
+    <button class="btn btn-sm btn-primary" id="navSignupBtn" onclick="showPage('signup')">Create Account</button>
+    <button class="btn btn-sm btn-primary" id="navDashBtn" style="display:none" onclick="showPage('dashboard')">Dashboard</button>
+    <button class="btn btn-sm btn-secondary" id="navLogoutBtn" style="display:none" onclick="logout()">Sign Out</button>
+  </div>
+  <div class="hamburger" onclick="toggleMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ===== MOBILE MENU ===== -->
+<div id="mobileMenu" style="display:none;position:fixed;top:70px;left:0;right:0;background:white;border-bottom:1px solid var(--gray-200);z-index:999;padding:16px 5%;">
+  <div style="display:flex;flex-direction:column;gap:4px;">
+    <a onclick="showPage('home');toggleMobileMenu()" style="padding:12px 8px;color:var(--gray-800);text-decoration:none;font-size:15px;border-bottom:1px solid var(--gray-100);">Home</a>
+    <a onclick="showPage('about');toggleMobileMenu()" style="padding:12px 8px;color:var(--gray-800);text-decoration:none;font-size:15px;border-bottom:1px solid var(--gray-100);">About</a>
+    <a onclick="showPage('services');toggleMobileMenu()" style="padding:12px 8px;color:var(--gray-800);text-decoration:none;font-size:15px;border-bottom:1px solid var(--gray-100);">Services</a>
+    <a onclick="showPage('blog');toggleMobileMenu()" style="padding:12px 8px;color:var(--gray-800);text-decoration:none;font-size:15px;border-bottom:1px solid var(--gray-100);">Blog</a>
+    <a onclick="showPage('contact');toggleMobileMenu()" style="padding:12px 8px;color:var(--gray-800);text-decoration:none;font-size:15px;border-bottom:1px solid var(--gray-100);">Contact</a>
+    <div style="display:flex;gap:10px;margin-top:12px;">
+      <button class="btn btn-md btn-secondary" style="flex:1" onclick="showPage('login');toggleMobileMenu()">Sign In</button>
+      <button class="btn btn-md btn-primary" style="flex:1" onclick="showPage('signup');toggleMobileMenu()">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div class="page active" id="page-landing">
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span>Trusted Cryptocurrency Intelligence Platform</span>
+      </div>
+      <h1>Navigate <em>Crypto Markets</em> With Confidence and Clarity</h1>
+      <p>CryptoVault provides institutional-grade investment intelligence, market analysis, and strategic guidance to help you make informed decisions in the digital asset space.</p>
+      <div class="hero-actions">
+        <button class="btn btn-lg btn-gold" onclick="showPage('signup')">Create Free Account</button>
+        <button class="btn btn-lg btn-outline-white" onclick="showPage('services')">Explore Services</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hero-stat-num">12,400+</div><div class="hero-stat-label">Registered Members</div></div>
+        <div><div class="hero-stat-num">98%</div><div class="hero-stat-label">Client Satisfaction</div></div>
+        <div><div class="hero-stat-num">7+</div><div class="hero-stat-label">Years of Experience</div></div>
+        <div><div class="hero-stat-num">50+</div><div class="hero-stat-label">Expert Analysts</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="section section-bg section-center">
+    <span class="section-tag">Why CryptoVault</span>
+    <h2 class="section-title">Built for the Informed Investor</h2>
+    <p class="section-subtitle">We combine rigorous research methodology with clear communication to give you a genuine edge in understanding digital asset markets.</p>
+    <div class="grid-3" style="margin-top:48px">
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3>Verified Research</h3>
+        <p>All market analysis and educational content is produced by credentialed analysts and reviewed for accuracy before publication.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Bank-Level Security</h3>
+        <p>Your data and communications are protected using 256-bit encryption and multi-factor authentication standards.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>Direct Expert Access</h3>
+        <p>Communicate directly with our team of analysts and advisors through your secure personal dashboard at any time.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Structured Learning</h3>
+        <p>From foundational concepts to advanced strategies, our educational resources are organized for all knowledge levels.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>Real-Time Insights</h3>
+        <p>Stay ahead with timely reports on market conditions, regulatory developments, and emerging opportunities.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/></svg>
+        </div>
+        <h3>Portfolio Intelligence</h3>
+        <p>Receive personalized guidance on portfolio structuring, diversification strategies, and risk-adjusted approaches.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INVESTMENT APPROACH -->
+  <section class="section">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+      <div>
+        <span class="section-tag">Our Methodology</span>
+        <h2 class="section-title">A Disciplined Approach to Crypto Intelligence</h2>
+        <p style="color:var(--gray-600);font-size:15px;margin-bottom:28px;line-height:1.7">Our investment intelligence framework integrates on-chain data analysis, macroeconomic context, and technical market structure to produce insights that are both actionable and well-reasoned.</p>
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div style="display:flex;gap:16px;align-items:flex-start">
+            <div style="width:32px;height:32px;background:var(--gold-pale);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="color:var(--gold);font-weight:700;font-size:13px">01</span>
+            </div>
+            <div>
+              <h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px">Fundamental Analysis</h4>
+              <p style="font-size:14px;color:var(--gray-600)">Evaluating project utility, team credentials, tokenomics, and ecosystem development.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start">
+            <div style="width:32px;height:32px;background:var(--gold-pale);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="color:var(--gold);font-weight:700;font-size:13px">02</span>
+            </div>
+            <div>
+              <h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px">On-Chain Metrics</h4>
+              <p style="font-size:14px;color:var(--gray-600)">Monitoring wallet activity, exchange flows, and network health indicators.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:16px;align-items:flex-start">
+            <div style="width:32px;height:32px;background:var(--gold-pale);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="color:var(--gold);font-weight:700;font-size:13px">03</span>
+            </div>
+            <div>
+              <h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px">Risk Framework</h4>
+              <p style="font-size:14px;color:var(--gray-600)">Quantifying downside scenarios and constructing resilient allocation strategies.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--navy);border-radius:var(--radius-xl);padding:40px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(200,149,42,0.1)"></div>
+        <div style="position:relative;z-index:1">
+          <h3 style="color:white;font-size:20px;font-weight:700;margin-bottom:28px">Performance Benchmarks</h3>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                <span style="color:rgba(255,255,255,0.7);font-size:13px">Research Accuracy Rate</span>
+                <span style="color:var(--gold-light);font-size:13px;font-weight:600">94%</span>
+              </div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px">
+                <div style="background:var(--gold);border-radius:4px;height:6px;width:94%"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                <span style="color:rgba(255,255,255,0.7);font-size:13px">Client Satisfaction Score</span>
+                <span style="color:var(--gold-light);font-size:13px;font-weight:600">98%</span>
+              </div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px">
+                <div style="background:var(--gold);border-radius:4px;height:6px;width:98%"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                <span style="color:rgba(255,255,255,0.7);font-size:13px">Report Delivery Timeliness</span>
+                <span style="color:var(--gold-light);font-size:13px;font-weight:600">99%</span>
+              </div>
+              <div style="background:rgba(255,255,255,0.1);border-radius:4px;height:6px">
+                <div style="background:var(--gold);border-radius:4px;height:6px;width:99%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section class="section section-dark section-center">
+    <span class="section-tag" style="color:var(--gold-light)">Security & Trust</span>
+    <h2 class="section-title">Your Privacy and Security Are Non-Negotiable</h2>
+    <p class="section-subtitle">We operate under stringent data protection protocols and transparent governance standards.</p>
+    <div class="grid-4" style="margin-top:48px">
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:24px;text-align:center">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--gold-light);margin-bottom:8px">256-bit</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55)">SSL Encryption</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:24px;text-align:center">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--gold-light);margin-bottom:8px">MFA</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55)">Multi-Factor Auth</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:24px;text-align:center">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--gold-light);margin-bottom:8px">GDPR</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55)">Compliant Storage</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:24px;text-align:center">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--gold-light);margin-bottom:8px">24/7</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.55)">Security Monitoring</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section section-bg section-center">
+    <span class="section-tag">Getting Started</span>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">Three simple steps to access professional-grade cryptocurrency intelligence.</p>
+    <div class="steps" style="margin-top:56px;max-width:800px;margin-left:auto;margin-right:auto">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Create Your Account</h4>
+        <p>Register securely with your email. Verification takes under two minutes.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Complete Your Profile</h4>
+        <p>Share your investment goals and experience level with our team.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Access Intelligence</h4>
+        <p>Receive personalized reports, insights, and direct expert communication.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section-center">
+    <span class="section-tag">Client Feedback</span>
+    <h2 class="section-title">What Our Members Say</h2>
+    <div class="grid-3" style="margin-top:48px;text-align:left">
+      <div class="testimonial">
+        <div class="testimonial-quote">"</div>
+        <p>CryptoVault's research reports helped me understand the nuances of DeFi protocols that I had previously found impenetrable. The quality of analysis is exceptional.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MK</div>
+          <div><div class="testimonial-name">Marcus K.</div><div class="testimonial-role">Private Investor, Frankfurt</div></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote">"</div>
+        <p>The direct messaging feature with their analysts is worth the membership alone. I've received thoughtful, detailed responses to my specific portfolio questions within hours.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">SL</div>
+          <div><div class="testimonial-name">Sarah L.</div><div class="testimonial-role">Financial Advisor, London</div></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="testimonial-quote">"</div>
+        <p>Unlike other platforms that focus on hype, CryptoVault delivers sober, evidence-based perspectives. Their risk framework guidance has been invaluable to my decision-making.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">AO</div>
+          <div><div class="testimonial-name">Adebayo O.</div><div class="testimonial-role">Institutional Analyst, Lagos</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="section section-dark">
+    <div style="max-width:560px;margin:0 auto;text-align:center">
+      <span class="section-tag" style="color:var(--gold-light)">Stay Informed</span>
+      <h2 class="section-title">Subscribe to Market Intelligence</h2>
+      <p class="section-subtitle" style="margin-bottom:0">Receive our weekly digest of market insights, research summaries, and educational content directly to your inbox.</p>
+      <div class="newsletter-row" style="margin-top:28px">
+        <input type="email" id="newsletterEmail" placeholder="Your email address">
+        <button class="btn btn-md btn-gold" onclick="subscribeNewsletter()">Subscribe</button>
+      </div>
+      <p style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:12px">No spam. Unsubscribe at any time. Read our <a onclick="showPage('privacy')" style="color:var(--gold-light);cursor:pointer">Privacy Policy</a>.</p>
+    </div>
+  </section>
+
+  <div id="landingFooter"></div>
+</div>
+
+<!-- ==================== HOME PAGE ==================== -->
+<div class="page" id="page-home">
+  <section class="section" style="padding-top:60px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+      <div>
+        <span class="section-tag">About Our Platform</span>
+        <h2 class="section-title">Empowering Investors Through Knowledge</h2>
+        <p style="color:var(--gray-600);font-size:15px;line-height:1.7;margin-bottom:20px">CryptoVault was founded in 2017 by a team of financial analysts and blockchain technologists who recognized a fundamental gap in the digital asset industry: the absence of reliable, independent investment intelligence accessible to everyday investors.</p>
+        <p style="color:var(--gray-600);font-size:15px;line-height:1.7;margin-bottom:28px">Today, we serve over 12,000 members globally with institutional-quality research, personalized consultation services, and a secure platform for expert communication.</p>
+        <button class="btn btn-md btn-primary" onclick="showPage('about')">Learn More About Us</button>
+      </div>
+      <div style="background:var(--gray-50);border-radius:var(--radius-xl);padding:36px;border:1px solid var(--gray-200)">
+        <h3 style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:24px">Market Overview — Key Assets</h3>
+        <div style="display:flex;flex-direction:column;gap:0">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-200)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">BTC</div>
+              <div><div style="font-weight:600;font-size:14px">Bitcoin</div><div style="font-size:12px;color:var(--gray-400)">BTC/USD</div></div>
+            </div>
+            <div style="text-align:right"><div style="font-weight:600;font-size:14px">$67,420</div><span class="badge badge-green">+2.4%</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-200)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:36px;height:36px;background:#3B5FD9;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">ETH</div>
+              <div><div style="font-weight:600;font-size:14px">Ethereum</div><div style="font-size:12px;color:var(--gray-400)">ETH/USD</div></div>
+            </div>
+            <div style="text-align:right"><div style="font-weight:600;font-size:14px">$3,210</div><span class="badge badge-green">+1.8%</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-200)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:36px;height:36px;background:#26A17B;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">BNB</div>
+              <div><div style="font-weight:600;font-size:14px">BNB Chain</div><div style="font-size:12px;color:var(--gray-400)">BNB/USD</div></div>
+            </div>
+            <div style="text-align:right"><div style="font-weight:600;font-size:14px">$415</div><span class="badge badge-red" style="background:#FDEBEB;color:#C0392B">-0.6%</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:36px;height:36px;background:#9B59B6;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">SOL</div>
+              <div><div style="font-weight:600;font-size:14px">Solana</div><div style="font-size:12px;color:var(--gray-400)">SOL/USD</div></div>
+            </div>
+            <div style="text-align:right"><div style="font-weight:600;font-size:14px">$178</div><span class="badge badge-green">+3.2%</span></div>
+          </div>
+        </div>
+        <p style="font-size:11px;color:var(--gray-400);margin-top:16px">Prices are indicative and for reference only. Not financial advice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Overview -->
+  <section class="section section-bg section-center">
+    <span class="section-tag">What We Offer</span>
+    <h2 class="section-title">Comprehensive Investment Services</h2>
+    <div class="grid-3" style="margin-top:40px">
+      <div class="card" onclick="showPage('services')">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+        <h3>Crypto Education</h3>
+        <p>Structured courses and guides covering blockchain fundamentals through advanced DeFi strategies.</p>
+      </div>
+      <div class="card" onclick="showPage('services')">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg></div>
+        <h3>Market Analysis</h3>
+        <p>Regular in-depth reports on market conditions, sector performance, and emerging trends.</p>
+      </div>
+      <div class="card" onclick="showPage('services')">
+        <div class="card-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <h3>Expert Consultation</h3>
+        <p>Direct one-on-one advisory sessions with our team of certified investment analysts.</p>
+      </div>
+    </div>
+    <button class="btn btn-md btn-primary" style="margin-top:32px" onclick="showPage('services')">View All Services</button>
+  </section>
+
+  <!-- Blog Highlights -->
+  <section class="section">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px">
+      <div>
+        <span class="section-tag">Latest Research</span>
+        <h2 class="section-title" style="margin-bottom:0">From the Blog</h2>
+      </div>
+      <button class="btn btn-sm btn-secondary" onclick="showPage('blog')">View All Posts</button>
+    </div>
+    <div class="grid-3" id="homeBlogGrid"></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section-dark section-center">
+    <h2 class="section-title" style="max-width:480px;margin:0 auto 16px">Ready to Invest With Intelligence?</h2>
+    <p class="section-subtitle" style="margin-bottom:32px">Join 12,000+ investors who rely on CryptoVault for credible, research-backed market intelligence.</p>
+    <button class="btn btn-lg btn-gold" onclick="showPage('signup')">Create Your Free Account</button>
+  </section>
+
+  <div id="homeFooter"></div>
+</div>
+
+<!-- ==================== ABOUT PAGE ==================== -->
+<div class="page" id="page-about">
+  <section class="hero" style="padding:80px 5%">
+    <div style="max-width:680px">
+      <span class="section-tag" style="color:var(--gold-light)">About CryptoVault</span>
+      <h1 style="font-size:clamp(30px,4vw,50px);font-weight:800;color:white;line-height:1.1;margin-bottom:20px">Seven Years of Independent Crypto Intelligence</h1>
+      <p style="color:rgba(255,255,255,0.7);font-size:16px;max-width:500px">We are a dedicated team of financial analysts, blockchain researchers, and security engineers committed to democratizing access to professional-grade digital asset intelligence.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center">
+      <div>
+        <span class="section-tag">Our Story</span>
+        <h2 class="section-title">Founded on a Clear Mission</h2>
+        <p style="color:var(--gray-600);font-size:15px;line-height:1.8;margin-bottom:18px">CryptoVault was established in 2017 when our founding team — experienced in traditional finance and emerging blockchain technology — recognized that retail investors were navigating one of the most complex and volatile asset classes in history without adequate information resources.</p>
+        <p style="color:var(--gray-600);font-size:15px;line-height:1.8;margin-bottom:18px">We set out to build an independent intelligence platform free from conflicts of interest: we do not execute trades, we do not hold client assets, and we do not have commercial relationships with the projects we analyze.</p>
+        <p style="color:var(--gray-600);font-size:15px;line-height:1.8">Our singular focus is producing the most accurate, objective, and useful research possible and making it accessible to a global community of thoughtful investors.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="background:var(--gray-50);border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:24px;display:flex;gap:20px;align-items:flex-start">
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0">2017</div>
+          <div><h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px">Platform Founded</h4><p style="font-size:14px;color:var(--gray-600)">Launched with a core team of 8 analysts and a commitment to independent research.</p></div>
+        </div>
+        <div style="background:var(--gray-50);border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:24px;display:flex;gap:20px;align-items:flex-start">
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0">2020</div>
+          <div><h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px">10,000 Members</h4><p style="font-size:14px;color:var(--gray-600)">Reached a major milestone driven by organic growth and word-of-mouth referrals.</p></div>
+        </div>
+        <div style="background:var(--gray-50);border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:24px;display:flex;gap:20px;align-items:flex-start">
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--gold);line-height:1;flex-shrink:0">2024</div>
+          <div><h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:6px">Enterprise Launch</h4><p style="font-size:14px;color:var(--gray-600)">Launched institutional-tier research services for family offices and wealth managers.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section section-bg section-center">
+    <span class="section-tag">Core Principles</span>
+    <h2 class="section-title">What We Stand For</h2>
+    <div class="grid-4" style="margin-top:40px">
+      <div class="card">
+        <h3>Independence</h3>
+        <p>We hold no financial positions in the assets we analyze. Our research is free from commercial bias.</p>
+      </div>
+      <div class="card">
+        <h3>Accuracy</h3>
+        <p>All content is reviewed by a senior analyst before publication. Errors are corrected transparently.</p>
+      </div>
+      <div class="card">
+        <h3>Clarity</h3>
+        <p>Complex concepts are translated into clear, actionable language accessible to all experience levels.</p>
+      </div>
+      <div class="card">
+        <h3>Responsibility</h3>
+        <p>We consistently emphasize risk management and discourage speculative behavior in our guidance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="section">
+    <div class="section-center" style="margin-bottom:48px">
+      <span class="section-tag">The Team</span>
+      <h2 class="section-title">Meet Our Analysts</h2>
+    </div>
+    <div class="grid-4">
+      <div style="text-align:center">
+        <div style="width:80px;height:80px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--font-display);font-size:22px;font-weight:700;color:white">JA</div>
+        <h4 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px">James Alderton</h4>
+        <p style="font-size:13px;color:var(--gold);margin-bottom:8px">Chief Research Officer</p>
+        <p style="font-size:13px;color:var(--gray-600)">15 years in institutional finance. Former Goldman Sachs analyst.</p>
+      </div>
+      <div style="text-align:center">
+        <div style="width:80px;height:80px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--font-display);font-size:22px;font-weight:700;color:white">YP</div>
+        <h4 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px">Yuki Patel</h4>
+        <p style="font-size:13px;color:var(--gold);margin-bottom:8px">Head of Blockchain Research</p>
+        <p style="font-size:13px;color:var(--gray-600)">PhD Computer Science. Contributed to three Layer 1 protocols.</p>
+      </div>
+      <div style="text-align:center">
+        <div style="width:80px;height:80px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--font-display);font-size:22px;font-weight:700;color:white">RA</div>
+        <h4 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px">Rachel Adeyemi</h4>
+        <p style="font-size:13px;color:var(--gold);margin-bottom:8px">Senior Market Analyst</p>
+        <p style="font-size:13px;color:var(--gray-600)">CFA charterholder with expertise in emerging market digital assets.</p>
+      </div>
+      <div style="text-align:center">
+        <div style="width:80px;height:80px;border-radius:50%;background:#8E44AD;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--font-display);font-size:22px;font-weight:700;color:white">TK</div>
+        <h4 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:4px">Thomas Kim</h4>
+        <p style="font-size:13px;color:var(--gold);margin-bottom:8px">Risk Strategy Consultant</p>
+        <p style="font-size:13px;color:var(--gray-600)">Former quantitative risk manager at Deutsche Bank.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-bg">
+    <div style="max-width:720px;margin:0 auto">
+      <div class="section-center" style="margin-bottom:40px">
+        <span class="section-tag">Common Questions</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+      </div>
+      <div id="faqContainer"></div>
+    </div>
+  </section>
+
+  <div id="aboutFooter"></div>
+</div>
+
+<!-- ==================== SERVICES PAGE ==================== -->
+<div class="page" id="page-services">
+  <section class="hero" style="padding:80px 5%">
+    <div style="max-width:580px">
+      <span class="section-tag" style="color:var(--gold-light)">Our Services</span>
+      <h1 style="font-size:clamp(30px,4vw,50px);font-weight:800;color:white;line-height:1.1;margin-bottom:20px">Professional Intelligence for Every Investor</h1>
+      <p style="color:rgba(255,255,255,0.7);font-size:16px">From foundational education to institutional-grade strategic consultation, our service offering is designed to meet you where you are.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid-2" style="gap:28px">
+      <div class="card" style="padding:36px">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h3 style="font-size:20px">Crypto Investment Education</h3>
+        <p style="margin-bottom:20px">A comprehensive library of structured courses covering blockchain fundamentals, DeFi protocols, NFT markets, Layer 2 scaling solutions, and macroeconomic influences on digital assets. Content is continuously updated to reflect current market conditions.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag">Beginner to Advanced</span>
+          <span class="tag">100+ Modules</span>
+          <span class="tag">Video & Text</span>
+        </div>
+      </div>
+      <div class="card" style="padding:36px">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M2 20h.01M7 20v-4"/><path d="M12 20V10"/><path d="M17 20V4"/></svg>
+        </div>
+        <h3 style="font-size:20px">Portfolio Guidance</h3>
+        <p style="margin-bottom:20px">Personalized portfolio review and structuring consultation delivered by senior analysts. We assess your risk tolerance, time horizon, and existing holdings to provide a tailored strategic framework — entirely informational and educational in nature.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag">Personalized</span>
+          <span class="tag">Risk-Adjusted</span>
+          <span class="tag">Written Reports</span>
+        </div>
+      </div>
+      <div class="card" style="padding:36px">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3 style="font-size:20px">Market Analysis Reports</h3>
+        <p style="margin-bottom:20px">Weekly and monthly research publications covering macro-level market structure, sector rotation, on-chain activity metrics, regulatory developments, and institutional flow analysis. All reports are produced by credentialed analysts and peer-reviewed.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag">Weekly Digest</span>
+          <span class="tag">Deep Dives</span>
+          <span class="tag">On-Chain Data</span>
+        </div>
+      </div>
+      <div class="card" style="padding:36px">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/></svg>
+        </div>
+        <h3 style="font-size:20px">Investment Strategy Consulting</h3>
+        <p style="margin-bottom:20px">Direct consultation sessions with a dedicated senior analyst. Discuss your specific investment thesis, stress-test your assumptions, and receive documented strategic guidance tailored to your financial goals and risk parameters.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag">1-on-1 Sessions</span>
+          <span class="tag">Written Strategy</span>
+          <span class="tag">Follow-up Support</span>
+        </div>
+      </div>
+      <div class="card" style="padding:36px">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 style="font-size:20px">Secure Client Communication</h3>
+        <p style="margin-bottom:20px">All client-analyst communications occur through our end-to-end encrypted messaging system. Your queries and our responses are confidential, archived securely, and never shared with third parties. Response times are guaranteed within 24 business hours.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <span class="tag">E2E Encrypted</span>
+          <span class="tag">24h Response</span>
+          <span class="tag">Full Archive</span>
+        </div>
+      </div>
+      <div class="card" style="padding:36px;background:var(--navy);border-color:var(--navy)">
+        <div class="card-icon" style="background:rgba(255,255,255,0.1)">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3 style="font-size:20px;color:white">Enterprise Research Access</h3>
+        <p style="margin-bottom:20px;color:rgba(255,255,255,0.65)">Institutional-grade data feeds, custom research requests, and dedicated analyst access for family offices, wealth management firms, and professional investment advisors.</p>
+        <button class="btn btn-md btn-gold" onclick="showPage('contact')">Contact Us for Pricing</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plans -->
+  <section class="section section-bg section-center">
+    <span class="section-tag">Membership Plans</span>
+    <h2 class="section-title">Choose Your Access Level</h2>
+    <p class="section-subtitle">All plans include access to our secure dashboard and messaging system.</p>
+    <div class="grid-3" style="margin-top:48px;text-align:left">
+      <div class="plan-card">
+        <h3>Standard</h3>
+        <div class="plan-rate">Free</div>
+        <div class="plan-sub">For new investors</div>
+        <ul class="plan-features">
+          <li>Access to educational library</li>
+          <li>Weekly market newsletter</li>
+          <li>Community Q&A access</li>
+          <li>Secure messaging (limited)</li>
+        </ul>
+        <button class="btn btn-md btn-secondary" style="width:100%" onclick="showPage('signup')">Get Started Free</button>
+      </div>
+      <div class="plan-card featured">
+        <div style="font-size:12px;font-weight:600;color:var(--gold);letter-spacing:0.5px;margin-bottom:8px">MOST POPULAR</div>
+        <h3>Professional</h3>
+        <div class="plan-rate">$49</div>
+        <div class="plan-sub">per month, billed annually</div>
+        <ul class="plan-features">
+          <li>Everything in Standard</li>
+          <li>Full market analysis reports</li>
+          <li>Portfolio guidance sessions</li>
+          <li>Unlimited secure messaging</li>
+          <li>Priority analyst response</li>
+        </ul>
+        <button class="btn btn-md btn-primary" style="width:100%" onclick="showPage('signup')">Start 14-Day Trial</button>
+      </div>
+      <div class="plan-card">
+        <h3>Enterprise</h3>
+        <div class="plan-rate">Custom</div>
+        <div class="plan-sub">For institutions & advisors</div>
+        <ul class="plan-features">
+          <li>Everything in Professional</li>
+          <li>Dedicated senior analyst</li>
+          <li>Custom research requests</li>
+          <li>Raw data API access</li>
+          <li>Compliance documentation</li>
+        </ul>
+        <button class="btn btn-md btn-primary" style="width:100%;background:var(--navy)" onclick="showPage('contact')">Contact Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="servicesFooter"></div>
+</div>
+
+<!-- ==================== BLOG PAGE ==================== -->
+<div class="page" id="page-blog">
+  <section style="padding:60px 5% 40px;background:var(--gray-50);border-bottom:1px solid var(--gray-200)">
+    <span class="section-tag">Research & Insights</span>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px">
+      <h1 style="font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:800;color:var(--navy)">The CryptoVault Journal</h1>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-secondary blog-filter active" data-cat="All">All</button>
+        <button class="btn btn-sm btn-secondary blog-filter" data-cat="Market Analysis">Market Analysis</button>
+        <button class="btn btn-sm btn-secondary blog-filter" data-cat="Education">Education</button>
+        <button class="btn btn-sm btn-secondary blog-filter" data-cat="Strategy">Strategy</button>
+        <button class="btn btn-sm btn-secondary blog-filter" data-cat="News">News</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid-3" id="blogGrid"></div>
+  </section>
+
+  <div id="blogFooter"></div>
+</div>
+
+<!-- BLOG POST DETAIL -->
+<div class="page" id="page-blogpost">
+  <section class="section" style="max-width:840px;margin:0 auto">
+    <div class="breadcrumb">
+      <a onclick="showPage('blog')" style="cursor:pointer;color:var(--blue)">Blog</a>
+      &nbsp;/&nbsp; <span id="postBreadcrumb">Article</span>
+    </div>
+    <span id="postCategory" class="badge badge-gold" style="margin-bottom:12px;display:inline-block"></span>
+    <h1 id="postTitle" style="font-family:var(--font-display);font-size:clamp(24px,3.5vw,40px);font-weight:800;color:var(--navy);margin-bottom:16px;line-height:1.2"></h1>
+    <div id="postMeta" style="display:flex;align-items:center;gap:16px;margin-bottom:32px;font-size:14px;color:var(--gray-400)"></div>
+    <div id="postBody" style="font-size:16px;line-height:1.85;color:var(--gray-800);margin-bottom:48px"></div>
+    <div style="border-top:1px solid var(--gray-200);padding-top:32px">
+      <h3 style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--navy);margin-bottom:24px">Comments</h3>
+      <div id="commentsContainer"></div>
+      <div style="margin-top:24px;background:var(--gray-50);border-radius:var(--radius-lg);padding:24px;border:1px solid var(--gray-200)">
+        <h4 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:16px">Leave a Comment</h4>
+        <div class="form-group"><input class="form-control" id="commentName" placeholder="Your name"></div>
+        <div class="form-group"><textarea class="textarea-control" id="commentText" placeholder="Share your thoughts..."></textarea></div>
+        <button class="btn btn-md btn-primary" onclick="submitComment()">Post Comment</button>
+      </div>
+    </div>
+  </section>
+  <div id="blogpostFooter"></div>
+</div>
+
+<!-- ==================== CONTACT PAGE ==================== -->
+<div class="page" id="page-contact">
+  <section style="padding:60px 5% 40px;background:var(--navy)">
+    <span class="section-tag" style="color:var(--gold-light)">Get in Touch</span>
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:800;color:white;margin-bottom:12px">Contact Our Team</h1>
+    <p style="color:rgba(255,255,255,0.65);font-size:16px;max-width:480px">Have questions about our services, pricing, or research methodology? Our team is available to assist you.</p>
+  </section>
+
+  <section class="section">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px">
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--navy);margin-bottom:28px">Send Us a Message</h2>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input class="form-control" id="contactFirst" placeholder="James"></div>
+          <div class="form-group"><label>Last Name</label><input class="form-control" id="contactLast" placeholder="Alderton"></div>
+        </div>
+        <div class="form-group"><label>Email Address</label><input class="form-control" id="contactEmail" type="email" placeholder="james@example.com"></div>
+        <div class="form-group"><label>Subject</label>
+          <select class="form-control" id="contactSubject">
+            <option value="">Select a topic</option>
+            <option>General Inquiry</option>
+            <option>Service Information</option>
+            <option>Technical Support</option>
+            <option>Partnership Request</option>
+            <option>Press & Media</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea class="textarea-control" id="contactMessage" placeholder="Tell us how we can help you..." style="min-height:140px"></textarea></div>
+        <button class="btn btn-md btn-primary" onclick="submitContact()">Send Message</button>
+      </div>
+      <div>
+        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--navy);margin-bottom:28px">Contact Information</h2>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .99h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+          <div><div style="font-weight:600;font-size:14px;color:var(--navy);margin-bottom:3px">Phone</div><p style="font-size:14px;color:var(--gray-600)">+1 (888) 427-8200<br>Mon–Fri, 09:00–18:00 EST</p></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><div style="font-weight:600;font-size:14px;color:var(--navy);margin-bottom:3px">Email</div><p style="font-size:14px;color:var(--gray-600)">research@cryptovault.io<br>support@cryptovault.io</p></div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><div style="font-weight:600;font-size:14px;color:var(--navy);margin-bottom:3px">Office</div><p style="font-size:14px;color:var(--gray-600)">330 Madison Avenue, Suite 1200<br>New York, NY 10017, United States</p></div>
+        </div>
+        <div style="margin-top:28px">
+          <h4 style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:14px">Follow Us</h4>
+          <div class="footer-social">
+            <a href="#" title="Facebook" style="border-color:var(--gray-200);color:var(--gray-600)">f</a>
+            <a href="#" title="Twitter" style="border-color:var(--gray-200);color:var(--gray-600)">X</a>
+            <a href="#" title="LinkedIn" style="border-color:var(--gray-200);color:var(--gray-600)">in</a>
+            <a href="#" title="Instagram" style="border-color:var(--gray-200);color:var(--gray-600)">ig</a>
+            <a href="#" title="Telegram" style="border-color:var(--gray-200);color:var(--gray-600)">tg</a>
+          </div>
+        </div>
+        <!-- Map Placeholder -->
+        <div style="margin-top:28px;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-200)">
+          <div style="background:var(--gray-100);height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+            <svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:var(--gray-400);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <p style="font-size:13px;color:var(--gray-400);text-align:center">330 Madison Avenue<br>New York, NY 10017</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="contactFooter"></div>
+</div>
+
+<!-- ==================== LOGIN PAGE ==================== -->
+<div class="page" id="page-login">
+  <div class="auth-container">
+    <div class="auth-box">
+      <div style="text-align:center;margin-bottom:32px">
+        <div style="width:56px;height:56px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          <svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your CryptoVault dashboard</p>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input class="form-control" type="email" id="loginEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input class="form-control" type="password" id="loginPassword" placeholder="Enter your password">
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-600);cursor:pointer">
+          <input type="checkbox"> Remember me
+        </label>
+        <a class="auth-link" style="font-size:13px">Forgot password?</a>
+      </div>
+      <button class="btn btn-lg btn-primary" style="width:100%;justify-content:center" onclick="handleLogin()">Sign In</button>
+      <p class="form-divider">— or sign in as admin —</p>
+      <button class="btn btn-md btn-secondary" style="width:100%;justify-content:center;margin-bottom:20px" onclick="handleAdminLogin()">Admin Sign In</button>
+      <p style="text-align:center;font-size:14px;color:var(--gray-600)">Don't have an account? <a class="auth-link" onclick="showPage('signup')">Create one</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SIGNUP PAGE ==================== -->
+<div class="page" id="page-signup">
+  <div class="auth-container">
+    <div class="auth-box">
+      <div style="text-align:center;margin-bottom:32px">
+        <div style="width:56px;height:56px;background:var(--navy);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+          <svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:white;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h2>Create Your Account</h2>
+        <p>Join 12,000+ investors on CryptoVault</p>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input class="form-control" id="signupFirst" placeholder="James"></div>
+        <div class="form-group"><label>Last Name</label><input class="form-control" id="signupLast" placeholder="Alderton"></div>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input class="form-control" type="email" id="signupEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input class="form-control" type="password" id="signupPassword" placeholder="Min. 8 characters">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input class="form-control" type="password" id="signupConfirm" placeholder="Repeat password">
+      </div>
+      <div style="margin-bottom:20px">
+        <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--gray-600);cursor:pointer;line-height:1.5">
+          <input type="checkbox" id="signupAgree" style="margin-top:3px">
+          I agree to the <a class="auth-link" onclick="showPage('terms')">Terms of Service</a> and <a class="auth-link" onclick="showPage('privacy')">Privacy Policy</a>
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary" style="width:100%;justify-content:center" onclick="handleSignup()">Create Account</button>
+      <p style="text-align:center;font-size:14px;color:var(--gray-600);margin-top:20px">Already have an account? <a class="auth-link" onclick="showPage('login')">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== USER DASHBOARD ==================== -->
+<div class="page" id="page-dashboard">
+  <div class="dashboard-layout">
+    <div class="sidebar">
+      <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:8px">
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:white">CryptoVault</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">Member Portal</div>
+      </div>
+      <div class="sidebar-item active" onclick="switchDashSection('overview')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Overview
+      </div>
+      <div class="sidebar-item" onclick="switchDashSection('messages')">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Messages
+        <span class="badge badge-gold" style="margin-left:auto;font-size:11px">2</span>
+      </div>
+      <div class="sidebar-item" onclick="switchDashSection('reports')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Research Reports
+      </div>
+      <div class="sidebar-item" onclick="switchDashSection('plans')">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Investment Plans
+      </div>
+      <div class="sidebar-item" onclick="switchDashSection('notifications')">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+        Notifications
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-item" onclick="switchDashSection('profile')">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Account Settings
+      </div>
+      <div class="sidebar-item" onclick="logout()">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <!-- OVERVIEW -->
+      <div class="dash-section active" id="dash-overview">
+        <div class="dash-header">
+          <h1 id="dashWelcome">Welcome back, James</h1>
+          <p>Here is a summary of your account activity.</p>
+        </div>
+        <div class="grid-4" style="margin-bottom:28px">
+          <div class="stat-card"><div class="stat-card-label">Plan Status</div><div class="stat-card-value" style="font-size:20px"><span class="badge badge-green">Active</span></div></div>
+          <div class="stat-card"><div class="stat-card-label">Reports Read</div><div class="stat-card-value">24</div><div class="stat-card-sub">This month</div></div>
+          <div class="stat-card"><div class="stat-card-label">Unread Messages</div><div class="stat-card-value">2</div></div>
+          <div class="stat-card"><div class="stat-card-label">Member Since</div><div class="stat-card-value" style="font-size:18px">Mar 2024</div></div>
+        </div>
+        <div class="grid-2" style="gap:24px">
+          <div class="table-card">
+            <div class="table-card-header"><h3>Recent Messages</h3><button class="btn btn-sm btn-secondary" onclick="switchDashSection('messages')">View All</button></div>
+            <div style="padding:0 16px">
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:16px 0;border-bottom:1px solid var(--gray-100)">
+                <div class="avatar" style="background:var(--gold);font-size:12px">CV</div>
+                <div><div style="font-size:13px;font-weight:600;color:var(--navy)">CryptoVault Team</div><div style="font-size:13px;color:var(--gray-600);margin-top:2px">Your Q2 portfolio review is ready. Please...</div><div style="font-size:11px;color:var(--gray-400);margin-top:4px">2 hours ago</div></div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:16px 0">
+                <div class="avatar" style="background:var(--gold);font-size:12px">CV</div>
+                <div><div style="font-size:13px;font-weight:600;color:var(--navy)">CryptoVault Team</div><div style="font-size:13px;color:var(--gray-600);margin-top:2px">New research report: Bitcoin Halving Analysis...</div><div style="font-size:11px;color:var(--gray-400);margin-top:4px">Yesterday</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="table-card">
+            <div class="table-card-header"><h3>Latest Reports</h3><button class="btn btn-sm btn-secondary" onclick="switchDashSection('reports')">View All</button></div>
+            <div style="padding:0 16px">
+              <div style="padding:14px 0;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:13px;font-weight:600;color:var(--navy)">Bitcoin Halving 2024</div><div style="font-size:12px;color:var(--gray-400)">Deep Dive Report</div></div>
+                <span class="badge badge-blue">New</span>
+              </div>
+              <div style="padding:14px 0;border-bottom:1px solid var(--gray-100);display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:13px;font-weight:600;color:var(--navy)">DeFi Sector Overview</div><div style="font-size:12px;color:var(--gray-400)">Weekly Market Report</div></div>
+                <span class="badge badge-gray">Read</span>
+              </div>
+              <div style="padding:14px 0;display:flex;justify-content:space-between;align-items:center">
+                <div><div style="font-size:13px;font-weight:600;color:var(--navy)">Risk Management Q1</div><div style="font-size:12px;color:var(--gray-400)">Strategy Report</div></div>
+                <span class="badge badge-gray">Read</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="dash-section" id="dash-messages">
+        <div class="dash-header"><h1>Messages</h1><p>Communicate securely with the CryptoVault team.</p></div>
+        <div style="background:var(--white);border-radius:var(--radius-lg);border:1px solid var(--gray-200);padding:28px">
+          <div class="msg-thread" id="messageThread">
+            <div class="msg-bubble admin">
+              <p>Welcome to CryptoVault. Your account has been activated. Please let us know if you have any questions about our services or require assistance with your investment research needs.</p>
+              <small>CryptoVault Team — Mar 12, 2025</small>
+            </div>
+            <div class="msg-bubble user">
+              <p>Thank you for the warm welcome. I would like to learn more about the portfolio guidance service. What information do I need to provide for a personalized assessment?</p>
+              <small>You — Mar 12, 2025</small>
+            </div>
+            <div class="msg-bubble admin">
+              <p>Your Q2 portfolio review is now ready in your reports section. We have completed the analysis based on the parameters you provided. Please review the document and let us know if you have any follow-up questions.</p>
+              <small>CryptoVault Team — Today, 10:34</small>
+            </div>
+          </div>
+          <div class="msg-input-row">
+            <textarea id="userMessageInput" rows="2" placeholder="Type your message to the CryptoVault team..."></textarea>
+            <button class="btn btn-md btn-primary" onclick="sendUserMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="dash-section" id="dash-reports">
+        <div class="dash-header"><h1>Research Reports</h1><p>Access your available market analysis and research publications.</p></div>
+        <div class="table-card">
+          <div class="table-card-header"><h3>All Reports</h3></div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead><tr><th>Report Title</th><th>Category</th><th>Published</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                <tr><td><strong>Bitcoin Halving 2024: Market Implications</strong></td><td><span class="badge badge-blue">Deep Dive</span></td><td>Mar 14, 2025</td><td><span class="badge badge-blue">New</span></td><td><button class="btn btn-sm btn-secondary">View</button></td></tr>
+                <tr><td><strong>DeFi Sector Overview — Q1 2025</strong></td><td><span class="badge badge-gold">Weekly</span></td><td>Mar 7, 2025</td><td><span class="badge badge-gray">Read</span></td><td><button class="btn btn-sm btn-secondary">View</button></td></tr>
+                <tr><td><strong>Risk Management Framework for Volatile Markets</strong></td><td><span class="badge badge-green">Strategy</span></td><td>Feb 28, 2025</td><td><span class="badge badge-gray">Read</span></td><td><button class="btn btn-sm btn-secondary">View</button></td></tr>
+                <tr><td><strong>Solana Ecosystem Analysis</strong></td><td><span class="badge badge-blue">Deep Dive</span></td><td>Feb 14, 2025</td><td><span class="badge badge-gray">Read</span></td><td><button class="btn btn-sm btn-secondary">View</button></td></tr>
+                <tr><td><strong>Institutional Crypto Adoption Report 2025</strong></td><td><span class="badge badge-gold">Annual</span></td><td>Jan 30, 2025</td><td><span class="badge badge-gray">Read</span></td><td><button class="btn btn-sm btn-secondary">View</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PLANS -->
+      <div class="dash-section" id="dash-plans">
+        <div class="dash-header"><h1>Investment Plans</h1><p>Educational overview of structured investment approaches.</p></div>
+        <div style="background:#FEF9F0;border:1px solid var(--gold);border-radius:var(--radius-md);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start">
+          <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2;flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p style="font-size:14px;color:var(--gray-800)"><strong>Disclaimer:</strong> The following information is provided for educational purposes only. CryptoVault does not execute, hold, or manage any investment positions on behalf of clients. Consult a licensed financial advisor before making investment decisions.</p>
+        </div>
+        <div class="grid-2">
+          <div class="plan-card"><h3>Conservative Growth</h3><div class="plan-rate">10–15%</div><div class="plan-sub">Informational target range p.a.</div><ul class="plan-features"><li>Large-cap allocation focus (BTC, ETH)</li><li>Low-risk stablecoin strategies</li><li>Dollar-cost averaging guidance</li></ul></div>
+          <div class="plan-card featured"><h3>Balanced Portfolio</h3><div class="plan-rate">20–35%</div><div class="plan-sub">Informational target range p.a.</div><ul class="plan-features"><li>Mixed cap allocation</li><li>DeFi yield awareness</li><li>Sector rotation strategies</li><li>Risk-managed exposure</li></ul></div>
+          <div class="plan-card"><h3>Growth Focused</h3><div class="plan-rate">35–60%</div><div class="plan-sub">Informational target range p.a.</div><ul class="plan-features"><li>Mid-cap emerging assets</li><li>Layer 2 protocol exposure</li><li>Higher volatility tolerance</li></ul></div>
+          <div class="plan-card"><h3>Speculative</h3><div class="plan-rate">60%+</div><div class="plan-sub">Informational target range p.a.</div><ul class="plan-features"><li>Small-cap and new projects</li><li>High risk — high reward profile</li><li>Extensive due diligence required</li></ul></div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div class="dash-section" id="dash-notifications">
+        <div class="dash-header"><h1>Notifications</h1><p>Your recent account activity and updates.</p></div>
+        <div class="table-card">
+          <div style="padding:0 16px">
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 0;border-bottom:1px solid var(--gray-100)">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--blue);margin-top:5px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--navy)">New Research Report Available</div><div style="font-size:13px;color:var(--gray-600);margin-top:3px">Bitcoin Halving 2024: Market Implications is ready to read.</div><div style="font-size:12px;color:var(--gray-400);margin-top:5px">2 hours ago</div></div>
+              <span class="badge badge-blue" style="flex-shrink:0">New</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 0;border-bottom:1px solid var(--gray-100)">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--blue);margin-top:5px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--navy)">Message from CryptoVault Team</div><div style="font-size:13px;color:var(--gray-600);margin-top:3px">Your Q2 portfolio review has been completed.</div><div style="font-size:12px;color:var(--gray-400);margin-top:5px">Today, 10:34</div></div>
+              <span class="badge badge-blue" style="flex-shrink:0">New</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 0;border-bottom:1px solid var(--gray-100)">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--gray-200);margin-top:5px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--navy)">Weekly Digest Published</div><div style="font-size:13px;color:var(--gray-600);margin-top:3px">This week's market digest is now available.</div><div style="font-size:12px;color:var(--gray-400);margin-top:5px">Mar 10, 2025</div></div>
+              <span class="badge badge-gray">Read</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 0">
+              <div style="width:10px;height:10px;border-radius:50%;background:var(--gray-200);margin-top:5px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--navy)">Account Successfully Activated</div><div style="font-size:13px;color:var(--gray-600);margin-top:3px">Welcome to CryptoVault Professional.</div><div style="font-size:12px;color:var(--gray-400);margin-top:5px">Mar 1, 2025</div></div>
+              <span class="badge badge-green">Done</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE -->
+      <div class="dash-section" id="dash-profile">
+        <div class="dash-header"><h1>Account Settings</h1><p>Manage your profile and preferences.</p></div>
+        <div class="grid-2" style="gap:24px">
+          <div class="table-card" style="padding:28px">
+            <div style="display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--gray-100)">
+              <div class="avatar avatar-lg" id="profileAvatar">JA</div>
+              <div>
+                <h3 id="profileName" style="font-size:18px;font-weight:700;color:var(--navy)">James Alderton</h3>
+                <p id="profileEmail" style="font-size:14px;color:var(--gray-400)">james@example.com</p>
+                <span class="badge badge-gold" style="margin-top:6px">Professional Plan</span>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>First Name</label><input class="form-control" id="profileFirst" value="James"></div>
+              <div class="form-group"><label>Last Name</label><input class="form-control" id="profileLastName" value="Alderton"></div>
+            </div>
+            <div class="form-group"><label>Email</label><input class="form-control" id="profileEmailInput" value="james@example.com"></div>
+            <div class="form-group"><label>Phone</label><input class="form-control" placeholder="+1 (555) 000-0000"></div>
+            <button class="btn btn-md btn-primary" onclick="saveProfile()">Save Changes</button>
+          </div>
+          <div class="table-card" style="padding:28px">
+            <h3 style="font-size:17px;font-weight:600;color:var(--navy);margin-bottom:20px">Security Settings</h3>
+            <div class="form-group"><label>Current Password</label><input class="form-control" type="password" placeholder="Enter current password"></div>
+            <div class="form-group"><label>New Password</label><input class="form-control" type="password" placeholder="Min. 8 characters"></div>
+            <div class="form-group"><label>Confirm New Password</label><input class="form-control" type="password" placeholder="Repeat new password"></div>
+            <button class="btn btn-md btn-secondary" onclick="showNotification('Password update functionality requires backend integration.','')">Update Password</button>
+            <div class="divider"></div>
+            <h3 style="font-size:17px;font-weight:600;color:var(--navy);margin-bottom:16px">Notification Preferences</h3>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <label style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;color:var(--gray-600)">New research reports <input type="checkbox" checked></label>
+              <label style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;color:var(--gray-600)">Admin messages <input type="checkbox" checked></label>
+              <label style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;color:var(--gray-600)">Weekly digest <input type="checkbox" checked></label>
+              <label style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;color:var(--gray-600)">Marketing emails <input type="checkbox"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN DASHBOARD ==================== -->
+<div class="page" id="page-admin">
+  <div class="dashboard-layout">
+    <div class="sidebar">
+      <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:8px">
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:white">CryptoVault</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:2px">Admin Panel</div>
+      </div>
+      <div class="sidebar-item active" onclick="switchAdminSection('analytics')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Analytics
+      </div>
+      <div class="sidebar-item" onclick="switchAdminSection('users')">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Users
+        <span class="badge badge-blue" style="margin-left:auto;font-size:11px">12.4k</span>
+      </div>
+      <div class="sidebar-item" onclick="switchAdminSection('adminmessages')">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Messages
+        <span class="badge badge-gold" style="margin-left:auto;font-size:11px">5</span>
+      </div>
+      <div class="sidebar-item" onclick="switchAdminSection('blog-mgmt')">
+        <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+        Blog Management
+      </div>
+      <div class="sidebar-item" onclick="switchAdminSection('content')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Content
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-item" onclick="logout()">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <!-- ANALYTICS -->
+      <div class="dash-section active" id="admin-analytics">
+        <div class="dash-header"><h1>Platform Analytics</h1><p>Real-time overview of platform activity and performance.</p></div>
+        <div class="grid-4" style="margin-bottom:28px">
+          <div class="stat-card"><div class="stat-card-label">Total Users</div><div class="stat-card-value">12,419</div><div class="stat-card-sub"><span style="color:var(--green-light)">+214</span> this month</div></div>
+          <div class="stat-card"><div class="stat-card-label">Active Users (30d)</div><div class="stat-card-value">8,304</div><div class="stat-card-sub">67% of total</div></div>
+          <div class="stat-card"><div class="stat-card-label">Blog Views</div><div class="stat-card-value">94.2k</div><div class="stat-card-sub">This month</div></div>
+          <div class="stat-card"><div class="stat-card-label">Messages</div><div class="stat-card-value">1,842</div><div class="stat-card-sub">Pending: 5</div></div>
+        </div>
+        <div class="grid-2" style="gap:24px">
+          <div class="table-card">
+            <div class="table-card-header"><h3>Recent User Signups</h3></div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>Samuel Eze</td><td>samuel@example.com</td><td>Today</td><td><span class="badge badge-green">Active</span></td></tr>
+                  <tr><td>Priya Sharma</td><td>priya@example.com</td><td>Yesterday</td><td><span class="badge badge-green">Active</span></td></tr>
+                  <tr><td>Carlos Reyes</td><td>carlos@example.com</td><td>Mar 13</td><td><span class="badge badge-green">Active</span></td></tr>
+                  <tr><td>Nina Kowalski</td><td>nina@example.com</td><td>Mar 12</td><td><span class="badge badge-gold">Pending</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="table-card">
+            <div class="table-card-header"><h3>Top Blog Posts (This Month)</h3></div>
+            <div style="padding:0 16px">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-100)">
+                <span style="font-size:14px;color:var(--gray-800)">Bitcoin Halving Analysis</span>
+                <span style="font-size:14px;font-weight:600;color:var(--navy)">12,400 views</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-100)">
+                <span style="font-size:14px;color:var(--gray-800)">DeFi Risk Management</span>
+                <span style="font-size:14px;font-weight:600;color:var(--navy)">9,820 views</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--gray-100)">
+                <span style="font-size:14px;color:var(--gray-800)">Layer 2 Scaling Guide</span>
+                <span style="font-size:14px;font-weight:600;color:var(--navy)">7,650 views</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0">
+                <span style="font-size:14px;color:var(--gray-800)">Institutional Crypto 2025</span>
+                <span style="font-size:14px;font-weight:600;color:var(--navy)">6,200 views</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS -->
+      <div class="dash-section" id="admin-users">
+        <div class="dash-header"><h1>User Management</h1><p>View, activate, and manage platform members.</p></div>
+        <div class="table-card">
+          <div class="table-card-header">
+            <h3>All Users</h3>
+            <input class="form-control" style="width:240px;padding:8px 12px" placeholder="Search users...">
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead><tr><th>User</th><th>Email</th><th>Plan</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="adminUsersTable">
+                <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:11px">JA</div>James Alderton</div></td><td>james@example.com</td><td><span class="badge badge-gold">Professional</span></td><td>Mar 1, 2025</td><td><span class="badge badge-green">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-secondary">View</button><button class="btn btn-sm" style="background:#FDEBEB;color:#C0392B;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px" onclick="showNotification('User deactivated.','')">Deactivate</button></div></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:var(--blue)">SP</div>Samuel Priya</div></td><td>samuel@example.com</td><td><span class="badge badge-gray">Standard</span></td><td>Mar 10, 2025</td><td><span class="badge badge-green">Active</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-secondary">View</button><button class="btn btn-sm" style="background:#FDEBEB;color:#C0392B;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px" onclick="showNotification('User deactivated.','')">Deactivate</button></div></td></tr>
+                <tr><td><div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:32px;height:32px;font-size:11px;background:#8E44AD">NK</div>Nina Kowalski</div></td><td>nina@example.com</td><td><span class="badge badge-gray">Standard</span></td><td>Mar 12, 2025</td><td><span class="badge badge-gold">Pending</span></td><td><div style="display:flex;gap:6px"><button class="btn btn-sm btn-secondary">View</button><button class="btn btn-sm" style="background:#E6F7EF;color:#1A7A4A;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px" onclick="showNotification('User activated successfully.','success')">Activate</button></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMIN MESSAGES -->
+      <div class="dash-section" id="admin-adminmessages">
+        <div class="dash-header"><h1>Message Center</h1><p>Respond to user inquiries and support requests.</p></div>
+        <div style="display:grid;grid-template-columns:260px 1fr;gap:20px">
+          <div class="table-card" style="padding:0;overflow:hidden">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--gray-100);font-size:13px;font-weight:600;color:var(--navy)">Conversations</div>
+            <div id="adminConversationList">
+              <div onclick="openAdminConversation('James Alderton','JA')" style="padding:14px 16px;border-bottom:1px solid var(--gray-100);cursor:pointer;background:var(--gray-50)">
+                <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:34px;height:34px;font-size:11px">JA</div><div><div style="font-size:13px;font-weight:600;color:var(--navy)">James Alderton</div><div style="font-size:12px;color:var(--gray-400);margin-top:1px">Q2 portfolio review...</div></div><span class="badge badge-blue" style="margin-left:auto;font-size:10px">2</span></div>
+              </div>
+              <div onclick="openAdminConversation('Samuel Eze','SE')" style="padding:14px 16px;cursor:pointer">
+                <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:34px;height:34px;font-size:11px;background:var(--blue)">SE</div><div><div style="font-size:13px;font-weight:600;color:var(--navy)">Samuel Eze</div><div style="font-size:12px;color:var(--gray-400);margin-top:1px">Service inquiry...</div></div></div>
+              </div>
+              <div onclick="openAdminConversation('Contact Form','CF')" style="padding:14px 16px;border-top:1px solid var(--gray-100);cursor:pointer">
+                <div style="display:flex;align-items:center;gap:10px"><div class="avatar" style="width:34px;height:34px;font-size:11px;background:var(--gray-400)">CF</div><div><div style="font-size:13px;font-weight:600;color:var(--navy)">Contact Form</div><div style="font-size:12px;color:var(--gray-400);margin-top:1px">Partnership request...</div></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="table-card" style="padding:0;overflow:hidden">
+            <div style="padding:14px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:12px">
+              <div class="avatar" style="width:34px;height:34px;font-size:11px" id="adminChatAvatar">JA</div>
+              <div><div style="font-size:14px;font-weight:600;color:var(--navy)" id="adminChatName">James Alderton</div><div style="font-size:12px;color:var(--gray-400)">Professional Plan</div></div>
+            </div>
+            <div style="padding:20px;height:300px;overflow-y:auto" id="adminMsgThread">
+              <div class="msg-thread">
+                <div class="msg-bubble user" style="background:var(--gray-50);color:var(--gray-800);border:1px solid var(--gray-200)"><p>I would like to learn more about the portfolio guidance service.</p><small>James — Mar 12</small></div>
+                <div class="msg-bubble admin"><p>We have reviewed your portfolio. The Q2 analysis is now ready. Please check your reports section.</p><small>You (Admin) — Today</small></div>
+              </div>
+            </div>
+            <div style="padding:16px 20px;border-top:1px solid var(--gray-100);display:flex;gap:10px">
+              <textarea id="adminReplyInput" class="msg-input-row" style="flex:1;padding:10px 12px;border-radius:var(--radius-md);border:1.5px solid var(--gray-200);font-family:var(--font-body);font-size:13px;resize:none;outline:none;display:block" rows="2" placeholder="Type your reply..."></textarea>
+              <button class="btn btn-md btn-primary" onclick="sendAdminReply()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOG MANAGEMENT -->
+      <div class="dash-section" id="admin-blog-mgmt">
+        <div class="dash-header" style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div><h1>Blog Management</h1><p>Create, edit, and manage published research articles.</p></div>
+          <button class="btn btn-md btn-primary" onclick="openBlogModal()">+ New Post</button>
+        </div>
+        <div class="table-card">
+          <div class="table-wrapper">
+            <table class="data-table" id="adminBlogTable">
+              <thead><tr><th>Title</th><th>Category</th><th>Author</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="adminBlogBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="dash-section" id="admin-content">
+        <div class="dash-header"><h1>Content Management</h1><p>Edit platform sections, services, and testimonials.</p></div>
+        <div class="admin-tab-bar">
+          <div class="admin-tab active" onclick="switchContentTab(this,'ct-hero')">Hero Section</div>
+          <div class="admin-tab" onclick="switchContentTab(this,'ct-services')">Services</div>
+          <div class="admin-tab" onclick="switchContentTab(this,'ct-testimonials')">Testimonials</div>
+        </div>
+        <div id="ct-hero">
+          <div class="table-card" style="padding:28px">
+            <h3 style="font-size:16px;font-weight:600;color:var(--navy);margin-bottom:20px">Hero Section</h3>
+            <div class="form-group"><label>Headline</label><input class="form-control" value="Navigate Crypto Markets With Confidence and Clarity"></div>
+            <div class="form-group"><label>Subheadline</label><textarea class="textarea-control" style="min-height:80px">CryptoVault provides institutional-grade investment intelligence, market analysis, and strategic guidance to help you make informed decisions in the digital asset space.</textarea></div>
+            <div class="form-row">
+              <div class="form-group"><label>Primary CTA Text</label><input class="form-control" value="Create Free Account"></div>
+              <div class="form-group"><label>Secondary CTA Text</label><input class="form-control" value="Explore Services"></div>
+            </div>
+            <button class="btn btn-md btn-primary" onclick="showNotification('Hero section updated successfully.','success')">Save Changes</button>
+          </div>
+        </div>
+        <div id="ct-services" style="display:none">
+          <div class="table-card" style="padding:28px">
+            <p style="font-size:14px;color:var(--gray-600)">Service cards are managed through the codebase. This panel allows updating of service descriptions and icons.</p>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:16px">
+              <div style="background:var(--gray-50);padding:16px;border-radius:var(--radius-md);border:1px solid var(--gray-200)">
+                <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:8px">Crypto Investment Education</div>
+                <textarea class="textarea-control" style="min-height:60px">A comprehensive library of structured courses covering blockchain fundamentals...</textarea>
+              </div>
+              <div style="background:var(--gray-50);padding:16px;border-radius:var(--radius-md);border:1px solid var(--gray-200)">
+                <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:8px">Portfolio Guidance</div>
+                <textarea class="textarea-control" style="min-height:60px">Personalized portfolio review and structuring consultation...</textarea>
+              </div>
+            </div>
+            <button class="btn btn-md btn-primary" style="margin-top:20px" onclick="showNotification('Services updated.','success')">Save Changes</button>
+          </div>
+        </div>
+        <div id="ct-testimonials" style="display:none">
+          <div class="table-card" style="padding:28px">
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div style="background:var(--gray-50);padding:16px;border-radius:var(--radius-md);border:1px solid var(--gray-200)">
+                <div class="form-row">
+                  <div class="form-group"><label>Name</label><input class="form-control" value="Marcus K."></div>
+                  <div class="form-group"><label>Role</label><input class="form-control" value="Private Investor, Frankfurt"></div>
+                </div>
+                <div class="form-group"><label>Testimonial</label><textarea class="textarea-control" style="min-height:80px">CryptoVault's research reports helped me understand the nuances of DeFi protocols...</textarea></div>
+              </div>
+            </div>
+            <button class="btn btn-md btn-primary" style="margin-top:20px" onclick="showNotification('Testimonials updated.','success')">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== TERMS PAGE ==================== -->
+<div class="page" id="page-terms">
+  <section style="padding:60px 5%;background:var(--navy)">
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:800;color:white">Terms and Conditions</h1>
+    <p style="color:rgba(255,255,255,0.6);margin-top:8px">Last updated: March 15, 2025</p>
+  </section>
+  <section class="section" style="max-width:800px">
+    <div style="font-size:15px;line-height:1.85;color:var(--gray-800)">
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">1. Acceptance of Terms</h2>
+      <p style="margin-bottom:24px">By accessing and using the CryptoVault platform ("Platform"), you accept and agree to be bound by these Terms and Conditions. If you do not agree to these terms, please do not use our Platform.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">2. Not Financial Advice</h2>
+      <p style="margin-bottom:24px">All content published by CryptoVault, including research reports, market analysis, blog articles, and direct communications, is provided for informational and educational purposes only. Nothing on this Platform constitutes financial, investment, legal, or tax advice. CryptoVault does not execute trades, hold client funds, or manage investment portfolios. You should consult a licensed financial advisor before making any investment decisions.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">3. User Accounts</h2>
+      <p style="margin-bottom:24px">You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account. CryptoVault reserves the right to suspend or terminate accounts that violate these terms.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">4. Intellectual Property</h2>
+      <p style="margin-bottom:24px">All content, research, and materials published on the Platform are the intellectual property of CryptoVault and are protected by applicable copyright and trademark laws. You may not reproduce, distribute, or create derivative works without explicit written permission.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">5. Risk Disclosure</h2>
+      <p style="margin-bottom:24px">Cryptocurrency markets are highly volatile and speculative. Past performance of any digital asset discussed on this Platform does not guarantee future results. There is a significant risk of financial loss associated with cryptocurrency investments. CryptoVault accepts no liability for any losses incurred based on information provided on this Platform.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">6. Limitation of Liability</h2>
+      <p style="margin-bottom:24px">To the maximum extent permitted by law, CryptoVault shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Platform or reliance on any content provided therein.</p>
+    </div>
+  </section>
+  <div id="termsFooter"></div>
+</div>
+
+<!-- ==================== PRIVACY PAGE ==================== -->
+<div class="page" id="page-privacy">
+  <section style="padding:60px 5%;background:var(--navy)">
+    <h1 style="font-family:var(--font-display);font-size:clamp(28px,4vw,44px);font-weight:800;color:white">Privacy Policy</h1>
+    <p style="color:rgba(255,255,255,0.6);margin-top:8px">Last updated: March 15, 2025</p>
+  </section>
+  <section class="section" style="max-width:800px">
+    <div style="font-size:15px;line-height:1.85;color:var(--gray-800)">
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">1. Information We Collect</h2>
+      <p style="margin-bottom:24px">We collect information you provide directly, such as your name, email address, and any messages sent through the Platform. We also collect technical data including IP addresses, browser type, and usage patterns through standard logging mechanisms.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">2. How We Use Your Information</h2>
+      <p style="margin-bottom:24px">Your information is used to provide and improve our services, communicate with you about your account and our research, and ensure the security of the Platform. We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">3. Data Security</h2>
+      <p style="margin-bottom:24px">We implement industry-standard security measures including 256-bit SSL encryption, multi-factor authentication, and regular security audits to protect your personal information from unauthorized access, disclosure, or modification.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">4. Your Rights (GDPR)</h2>
+      <p style="margin-bottom:24px">If you are located in the European Union, you have the right to access, correct, or delete your personal data. You may also request a copy of the data we hold about you or withdraw consent for processing. To exercise these rights, contact us at privacy@cryptovault.io.</p>
+      <h2 style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:12px">5. Cookies</h2>
+      <p style="margin-bottom:24px">We use essential cookies to maintain session state and security. Analytics cookies help us understand how users interact with the Platform. You may decline non-essential cookies through your browser settings or the consent banner displayed on your first visit.</p>
+    </div>
+  </section>
+  <div id="privacyFooter"></div>
+</div>
+
+<!-- ==================== BLOG MODAL ==================== -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('blogModal').classList.remove('open')">×</button>
+    <h2 id="blogModalTitle">New Blog Post</h2>
+    <div class="form-group"><label>Post Title</label><input class="form-control" id="bpTitle" placeholder="Enter a compelling title..."></div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label>
+        <select class="form-control" id="bpCategory">
+          <option>Market Analysis</option><option>Education</option><option>Strategy</option><option>News</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Author</label><input class="form-control" id="bpAuthor" value="CryptoVault Team"></div>
+    </div>
+    <div class="form-group"><label>Excerpt</label><textarea class="textarea-control" id="bpExcerpt" placeholder="Brief summary of the article..."></textarea></div>
+    <div class="form-group"><label>Full Content</label><textarea class="textarea-control" id="bpContent" style="min-height:180px" placeholder="Write your full article here..."></textarea></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">
+      <button class="btn btn-md btn-secondary" onclick="document.getElementById('blogModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-md btn-primary" onclick="saveBlogPost()">Publish Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FOOTER TEMPLATE ==================== -->
+<template id="footerTemplate">
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span style="font-family:var(--font-display);font-size:18px;font-weight:800;color:white">CryptoVault</span>
+        </div>
+        <p>Professional cryptocurrency investment intelligence. Trusted by 12,000+ investors globally.</p>
+        <div class="footer-social">
+          <a href="#" title="Facebook">f</a>
+          <a href="#" title="Twitter">X</a>
+          <a href="#" title="LinkedIn">in</a>
+          <a href="#" title="Instagram">ig</a>
+          <a href="#" title="Telegram">tg</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('about')">About</a></li>
+          <li><a onclick="showPage('services')">Services</a></li>
+          <li><a onclick="showPage('blog')">Research Blog</a></li>
+          <li><a onclick="showPage('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a onclick="showPage('services')">Crypto Education</a></li>
+          <li><a onclick="showPage('services')">Portfolio Guidance</a></li>
+          <li><a onclick="showPage('services')">Market Analysis</a></li>
+          <li><a onclick="showPage('services')">Strategy Consulting</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a onclick="showPage('terms')">Terms of Service</a></li>
+          <li><a onclick="showPage('privacy')">Privacy Policy</a></li>
+          <li><a onclick="showPage('privacy')">Cookie Policy</a></li>
+          <li><a onclick="showPage('contact')">Compliance</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 CryptoVault Intelligence Ltd. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a onclick="showPage('terms')">Terms</a>
+        <a onclick="showPage('privacy')">Privacy</a>
+        <a onclick="showPage('contact')">Contact</a>
+      </div>
+    </div>
+  </footer>
+</template>
+
+<script>
+// ============ STATE ============
+let currentUser = null;
+let isAdmin = false;
+let blogPosts = [
+  { id:1, title:'Bitcoin Halving 2024: What Investors Need to Know', category:'Market Analysis', author:'James Alderton', date:'Mar 14, 2025', excerpt:'The upcoming Bitcoin halving represents one of the most significant supply-side events in the asset\'s history. We examine on-chain data, historical precedents, and potential price implications.', content:'The Bitcoin halving, scheduled for April 2024, will reduce the block reward from 6.25 BTC to 3.125 BTC. This event occurs approximately every four years and has historically been followed by significant price appreciation in the subsequent 12-18 months.\n\nOn-chain data currently shows a steady accumulation pattern among long-term holders, with exchange balances reaching multi-year lows. This supply-side dynamic, combined with the growing institutional demand following the approval of spot Bitcoin ETFs, creates a compelling macroeconomic backdrop.\n\nHistorically, each halving has been followed by a new all-time high within 12-18 months. However, past performance does not guarantee future results, and investors should approach any allocation decision with rigorous risk management.', comments:[{name:'Michael R.',text:'Excellent analysis. The institutional angle is often overlooked in mainstream coverage.'}] },
+  { id:2, title:'DeFi Risk Management: A Practical Framework', category:'Strategy', author:'Rachel Adeyemi', date:'Mar 7, 2025', excerpt:'Decentralized finance offers compelling yield opportunities but introduces unique risk vectors that traditional investors may not be familiar with. This guide provides a structured framework for evaluation.', content:'Decentralized finance protocols offer yields that are structurally impossible in traditional financial systems. However, these opportunities come with distinct risk categories that require careful assessment before any capital allocation.\n\nSmart contract risk represents perhaps the most significant category. Code vulnerabilities, oracle manipulation, and governance attacks have resulted in hundreds of millions in losses. Any DeFi allocation should begin with a thorough audit review and an assessment of the protocol\'s security history.\n\nLiquidity risk, impermanent loss, and regulatory uncertainty round out the primary risk dimensions. A prudent framework assigns maximum position limits per protocol and mandates diversification across risk profiles.', comments:[] },
+  { id:3, title:'Layer 2 Scaling Solutions: A Technical Overview', category:'Education', author:'Yuki Patel', date:'Feb 28, 2025', excerpt:'Ethereum\'s layer 2 ecosystem has matured rapidly, with Optimistic and ZK-rollup technologies now processing billions in transaction volume. We compare the leading solutions across key metrics.', content:'The Ethereum Layer 2 ecosystem has experienced rapid maturation over the past 24 months. Optimistic rollup solutions like Arbitrum and Optimism now regularly process more transactions than the Ethereum mainnet itself, while ZK-rollup technology is emerging as the long-term scaling solution of choice.\n\nOptimistic rollups assume transaction validity by default and use a fraud-proof system for disputes, resulting in a 7-day withdrawal period to mainnet. ZK-rollups, by contrast, generate cryptographic validity proofs for every batch of transactions, enabling near-instant finality and significantly better security guarantees.\n\nFor investors, the L2 ecosystem represents both an opportunity (applications with dramatically reduced fees) and a risk consideration (smart contract complexity is multiplied).', comments:[{name:'Tech_Investor','text':'Clear and accessible explanation of complex material. Thank you.'}] },
+  { id:4, title:'Institutional Crypto Adoption: 2025 Landscape Report', category:'News', author:'James Alderton', date:'Jan 30, 2025', excerpt:'The approval of spot Bitcoin ETFs has catalyzed a new wave of institutional participation. We examine the current state of institutional crypto adoption and its implications for market structure.', content:'The approval of spot Bitcoin ETFs by the SEC in January 2024 marked a watershed moment for institutional cryptocurrency adoption. Within six months, these products collectively accumulated over $40 billion in assets under management, representing the fastest ETF launch in financial history.\n\nThe structural implications for Bitcoin\'s market dynamics are significant. Institutional holders typically exhibit longer time horizons and lower sensitivity to short-term price volatility compared to retail investors, creating a natural dampening effect on extreme price movements.\n\nLooking ahead, the anticipated approval of spot Ethereum ETFs and the potential tokenization of traditional assets on blockchain infrastructure represent the next frontier of institutional engagement with digital assets.', comments:[] }
+];
+let editingPostId = null;
+let comments = {};
+
+// ============ PAGE NAVIGATION ============
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-'+name);
+  if (!page) return;
+  page.classList.add('active');
+  window.scrollTo(0,0);
+  renderFooters(name);
+  if (name === 'home') renderHomeBlog();
+  if (name === 'blog') renderBlogGrid('All');
+  if (name === 'admin') { if (!isAdmin) { showPage('login'); return; } renderAdminBlog(); }
+  if (name === 'dashboard' && !currentUser && !isAdmin) { showPage('login'); return; }
+}
+
+function renderFooters(name) {
+  const footerIds = {
+    landing:'landingFooter', home:'homeFooter', about:'aboutFooter',
+    services:'servicesFooter', blog:'blogFooter', blogpost:'blogpostFooter',
+    contact:'contactFooter', terms:'termsFooter', privacy:'privacyFooter'
+  };
+  const id = footerIds[name];
+  if (id) {
+    const el = document.getElementById(id);
+    if (el && !el.innerHTML.trim()) {
+      const tpl = document.getElementById('footerTemplate');
+      el.appendChild(tpl.content.cloneNode(true));
+    }
+  }
+}
+
+// ============ AUTH ============
+function handleLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  if (!email || !pass) { showNotification('Please fill in all fields.','error'); return; }
+  if (!email.includes('@')) { showNotification('Please enter a valid email address.','error'); return; }
+  currentUser = { name: 'James Alderton', email: email, initials: 'JA' };
+  isAdmin = false;
+  updateNavForAuth();
+  showPage('dashboard');
+  showNotification('Welcome back, James!','success');
+}
+
+function handleAdminLogin() {
+  currentUser = { name: 'Admin', email: 'admin@cryptovault.io', initials: 'AD' };
+  isAdmin = true;
+  updateNavForAuth();
+  showPage('admin');
+  showNotification('Admin session started.','success');
+}
+
+function handleSignup() {
+  const first = document.getElementById('signupFirst').value.trim();
+  const last = document.getElementById('signupLast').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPassword').value;
+  const confirm = document.getElementById('signupConfirm').value;
+  const agreed = document.getElementById('signupAgree').checked;
+  if (!first || !last || !email || !pass) { showNotification('Please fill in all fields.','error'); return; }
+  if (!email.includes('@')) { showNotification('Please enter a valid email address.','error'); return; }
+  if (pass.length < 8) { showNotification('Password must be at least 8 characters.','error'); return; }
+  if (pass !== confirm) { showNotification('Passwords do not match.','error'); return; }
+  if (!agreed) { showNotification('Please agree to the Terms of Service.','error'); return; }
+  currentUser = { name: first+' '+last, email: email, initials: (first[0]+last[0]).toUpperCase() };
+  isAdmin = false;
+  updateNavForAuth();
+  document.getElementById('dashWelcome').textContent = 'Welcome, ' + first + '!';
+  document.getElementById('profileAvatar').textContent = currentUser.initials;
+  document.getElementById('profileName').textContent = currentUser.name;
+  document.getElementById('profileEmail').textContent = email;
+  document.getElementById('profileFirst').value = first;
+  document.getElementById('profileLastName').value = last;
+  document.getElementById('profileEmailInput').value = email;
+  showPage('dashboard');
+  showNotification('Account created successfully! Welcome to CryptoVault.','success');
+}
+
+function logout() {
+  currentUser = null; isAdmin = false;
+  updateNavForAuth();
+  showPage('landing');
+  showNotification('You have been signed out.','');
+}
+
+function updateNavForAuth() {
+  const loggedIn = !!currentUser;
+  document.getElementById('navLoginBtn').style.display = loggedIn ? 'none' : '';
+  document.getElementById('navSignupBtn').style.display = loggedIn ? 'none' : '';
+  document.getElementById('navDashBtn').style.display = loggedIn ? '' : 'none';
+  document.getElementById('navLogoutBtn').style.display = loggedIn ? '' : 'none';
+}
+
+// ============ BLOG ============
+function renderBlogCard(post) {
+  return `<div class="blog-card" onclick="openPost(${post.id})">
+    <div class="blog-img-placeholder">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    </div>
+    <div class="blog-body">
+      <div class="blog-cat">${post.category}</div>
+      <div class="blog-title">${post.title}</div>
+      <div class="blog-excerpt">${post.excerpt}</div>
+      <div class="blog-meta">
+        <span>${post.author}</span>
+        <div class="blog-meta-dot"></div>
+        <span>${post.date}</span>
+        <div class="blog-meta-dot"></div>
+        <span>${post.comments ? post.comments.length : 0} comments</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderBlogGrid(cat) {
+  const grid = document.getElementById('blogGrid');
+  const filtered = cat === 'All' ? blogPosts : blogPosts.filter(p => p.category === cat);
+  grid.innerHTML = filtered.map(renderBlogCard).join('');
+  document.querySelectorAll('.blog-filter').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+    btn.style.background = btn.dataset.cat === cat ? 'var(--navy)' : '';
+    btn.style.color = btn.dataset.cat === cat ? 'white' : '';
+    btn.style.borderColor = btn.dataset.cat === cat ? 'var(--navy)' : '';
+  });
+}
+
+function renderHomeBlog() {
+  const grid = document.getElementById('homeBlogGrid');
+  grid.innerHTML = blogPosts.slice(0,3).map(renderBlogCard).join('');
+}
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('blog-filter') || e.target.closest('.blog-filter')) {
+    const btn = e.target.classList.contains('blog-filter') ? e.target : e.target.closest('.blog-filter');
+    renderBlogGrid(btn.dataset.cat);
+  }
+});
+
+function openPost(id) {
+  const post = blogPosts.find(p => p.id === id);
+  if (!post) return;
+  document.getElementById('postBreadcrumb').textContent = post.title;
+  document.getElementById('postCategory').textContent = post.category;
+  document.getElementById('postTitle').textContent = post.title;
+  document.getElementById('postMeta').innerHTML = `
+    <div class="avatar" style="width:32px;height:32px;font-size:11px">${post.author.split(' ').map(w=>w[0]).join('')}</div>
+    <span>${post.author}</span>
+    <div class="blog-meta-dot"></div>
+    <span>${post.date}</span>
+  `;
+  document.getElementById('postBody').innerHTML = post.content.split('\n\n').map(p => `<p style="margin-bottom:20px">${p}</p>`).join('');
+  renderComments(id);
+  showPage('blogpost');
+  window._currentPostId = id;
+}
+
+function renderComments(postId) {
+  const post = blogPosts.find(p => p.id === postId);
+  const container = document.getElementById('commentsContainer');
+  if (!post || !post.comments || post.comments.length === 0) {
+    container.innerHTML = '<p style="color:var(--gray-400);font-size:14px">No comments yet. Be the first to share your thoughts.</p>';
+    return;
+  }
+  container.innerHTML = post.comments.map(c => `
+    <div style="display:flex;gap:14px;margin-bottom:20px">
+      <div class="avatar" style="width:36px;height:36px;font-size:12px;flex-shrink:0">${c.name.split(' ').map(w=>w[0]).join('').substring(0,2)}</div>
+      <div style="flex:1;background:var(--gray-50);border-radius:var(--radius-md);padding:14px;border:1px solid var(--gray-200)">
+        <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px">${c.name}</div>
+        <p style="font-size:14px;color:var(--gray-600)">${c.text}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function submitComment() {
+  const name = document.getElementById('commentName').value.trim();
+  const text = document.getElementById('commentText').value.trim();
+  if (!name || !text) { showNotification('Please fill in your name and comment.','error'); return; }
+  const post = blogPosts.find(p => p.id === window._currentPostId);
+  if (post) { post.comments.push({name,text}); renderComments(post.id); }
+  document.getElementById('commentName').value = '';
+  document.getElementById('commentText').value = '';
+  showNotification('Comment posted successfully.','success');
+}
+
+// ============ ADMIN BLOG ============
+function renderAdminBlog() {
+  const tbody = document.getElementById('adminBlogBody');
+  tbody.innerHTML = blogPosts.map(p => `
+    <tr>
+      <td><strong>${p.title}</strong></td>
+      <td><span class="badge badge-gold">${p.category}</span></td>
+      <td>${p.author}</td>
+      <td>${p.date}</td>
+      <td><div style="display:flex;gap:6px">
+        <button class="btn btn-sm btn-secondary" onclick="editPost(${p.id})">Edit</button>
+        <button class="btn btn-sm" style="background:#FDEBEB;color:#C0392B;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:12px" onclick="deletePost(${p.id})">Delete</button>
+      </div></td>
+    </tr>
+  `).join('');
+}
+
+function openBlogModal(postId) {
+  editingPostId = postId || null;
+  const modal = document.getElementById('blogModal');
+  if (postId) {
+    const post = blogPosts.find(p => p.id === postId);
+    document.getElementById('blogModalTitle').textContent = 'Edit Post';
+    document.getElementById('bpTitle').value = post.title;
+    document.getElementById('bpCategory').value = post.category;
+    document.getElementById('bpAuthor').value = post.author;
+    document.getElementById('bpExcerpt').value = post.excerpt;
+    document.getElementById('bpContent').value = post.content;
+  } else {
+    document.getElementById('blogModalTitle').textContent = 'New Blog Post';
+    document.getElementById('bpTitle').value = '';
+    document.getElementById('bpExcerpt').value = '';
+    document.getElementById('bpContent').value = '';
+  }
+  modal.classList.add('open');
+}
+
+function editPost(id) { openBlogModal(id); }
+
+function deletePost(id) {
+  if (confirm('Are you sure you want to delete this post?')) {
+    blogPosts = blogPosts.filter(p => p.id !== id);
+    renderAdminBlog();
+    showNotification('Post deleted.','');
+  }
+}
+
+function saveBlogPost() {
+  const title = document.getElementById('bpTitle').value.trim();
+  const category = document.getElementById('bpCategory').value;
+  const author = document.getElementById('bpAuthor').value.trim();
+  const excerpt = document.getElementById('bpExcerpt').value.trim();
+  const content = document.getElementById('bpContent').value.trim();
+  if (!title || !excerpt || !content) { showNotification('Please fill in all required fields.','error'); return; }
+  if (editingPostId) {
+    const post = blogPosts.find(p => p.id === editingPostId);
+    if (post) { post.title=title; post.category=category; post.author=author; post.excerpt=excerpt; post.content=content; }
+    showNotification('Post updated successfully.','success');
+  } else {
+    blogPosts.unshift({ id: Date.now(), title, category, author, date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}), excerpt, content, comments:[] });
+    showNotification('Post published successfully.','success');
+  }
+  document.getElementById('blogModal').classList.remove('open');
+  renderAdminBlog();
+}
+
+// ============ DASHBOARD ============
+function switchDashSection(name) {
+  document.querySelectorAll('#page-dashboard .dash-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('#page-dashboard .sidebar-item').forEach(item => item.classList.remove('active'));
+  const section = document.getElementById('dash-'+name);
+  if (section) section.classList.add('active');
+  event.currentTarget && event.currentTarget.classList.add('active');
+}
+
+function switchAdminSection(name) {
+  document.querySelectorAll('#page-admin .dash-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('#page-admin .sidebar-item').forEach(item => item.classList.remove('active'));
+  const section = document.getElementById('admin-'+name);
+  if (section) section.classList.add('active');
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+}
+
+function switchContentTab(tab, sectionId) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('[id^="ct-"]').forEach(s => s.style.display = 'none');
+  document.getElementById(sectionId).style.display = '';
+}
+
+// ============ MESSAGES ============
+function sendUserMessage() {
+  const input = document.getElementById('userMessageInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const thread = document.getElementById('messageThread');
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble user';
+  bubble.innerHTML = `<p>${text}</p><small>You — Just now</small>`;
+  thread.appendChild(bubble);
+  input.value = '';
+  thread.scrollTop = thread.scrollHeight;
+  setTimeout(() => {
+    const reply = document.createElement('div');
+    reply.className = 'msg-bubble admin';
+    reply.innerHTML = `<p>Thank you for your message. A member of our team will respond within 24 business hours.</p><small>CryptoVault Team — Just now</small>`;
+    thread.appendChild(reply);
+    thread.scrollTop = thread.scrollHeight;
+  }, 1500);
+}
+
+function openAdminConversation(name, initials) {
+  document.getElementById('adminChatName').textContent = name;
+  document.getElementById('adminChatAvatar').textContent = initials;
+}
+
+function sendAdminReply() {
+  const input = document.getElementById('adminReplyInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const thread = document.getElementById('adminMsgThread').querySelector('.msg-thread');
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble admin';
+  bubble.innerHTML = `<p>${text}</p><small>You (Admin) — Just now</small>`;
+  thread.appendChild(bubble);
+  input.value = '';
+  showNotification('Reply sent successfully.','success');
+}
+
+// ============ MISC ============
+function saveProfile() {
+  const first = document.getElementById('profileFirst').value.trim();
+  const last = document.getElementById('profileLastName').value.trim();
+  const email = document.getElementById('profileEmailInput').value.trim();
+  if (!first || !last || !email) { showNotification('Please fill in all fields.','error'); return; }
+  document.getElementById('profileName').textContent = first + ' ' + last;
+  document.getElementById('profileEmail').textContent = email;
+  document.getElementById('profileAvatar').textContent = (first[0]+last[0]).toUpperCase();
+  document.getElementById('dashWelcome').textContent = 'Welcome back, ' + first + '!';
+  showNotification('Profile updated successfully.','success');
+}
+
+function submitContact() {
+  const first = document.getElementById('contactFirst').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const message = document.getElementById('contactMessage').value.trim();
+  if (!first || !email || !message) { showNotification('Please complete all required fields.','error'); return; }
+  showNotification('Your message has been sent. We will respond within 24 hours.','success');
+  document.getElementById('contactFirst').value = '';
+  document.getElementById('contactLast').value = '';
+  document.getElementById('contactEmail').value = '';
+  document.getElementById('contactMessage').value = '';
+}
+
+function subscribeNewsletter() {
+  const email = document.getElementById('newsletterEmail').value.trim();
+  if (!email || !email.includes('@')) { showNotification('Please enter a valid email address.','error'); return; }
+  document.getElementById('newsletterEmail').value = '';
+  showNotification('You have been subscribed to the weekly digest.','success');
+}
+
+function dismissCookie() {
+  document.getElementById('cookieBanner').style.display = 'none';
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+// ============ NOTIFICATION ============
+function showNotification(msg, type) {
+  const n = document.getElementById('notification');
+  n.textContent = msg;
+  n.className = 'notification show' + (type ? ' '+type : '');
+  setTimeout(() => { n.classList.remove('show'); }, 3500);
+}
+
+// ============ FAQ ============
+const faqs = [
+  { q:'Does CryptoVault execute trades or manage investment portfolios?', a:'No. CryptoVault is an information and intelligence platform only. We do not execute trades, hold client assets, or manage investment portfolios. All of our content is educational and informational in nature.' },
+  { q:'What qualifications do your analysts hold?', a:'Our analyst team includes CFA charterholders, individuals with advanced degrees in computer science and finance, and professionals with backgrounds at major financial institutions including Goldman Sachs, Deutsche Bank, and JP Morgan.' },
+  { q:'How is my personal data protected?', a:'We use 256-bit SSL encryption for all data transmission and storage, implement multi-factor authentication, conduct regular third-party security audits, and comply with GDPR and applicable data protection regulations.' },
+  { q:'Can I cancel my subscription at any time?', a:'Yes. Subscriptions can be cancelled at any time from your account settings. Your access will continue until the end of the current billing period, after which no further charges will be made.' },
+  { q:'How quickly will I receive a response to my messages?', a:'Our team guarantees a response to all member messages within 24 business hours. Professional plan members receive priority response, typically within 4-8 business hours.' },
+  { q:'Is your research truly independent?', a:'Yes. CryptoVault holds no financial positions in any assets we analyze and has no commercial relationships with the projects we cover. Our research is funded entirely through membership subscriptions.' }
+];
+
+function renderFAQ() {
+  const container = document.getElementById('faqContainer');
+  if (!container) return;
+  container.innerHTML = faqs.map((f,i) => `
+    <div class="faq-item" id="faq-${i}">
+      <div class="faq-question" onclick="toggleFAQ(${i})">
+        ${f.q}
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="faq-answer">${f.a}</div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(i) { 
+  const item = document.getElementById('faq-'+i);
+  item.classList.toggle('open');
+}
+
+// ============ INIT ============
+renderFAQ();
+renderFooters('landing');
+
+// Render home blog on initial visit if needed
+setTimeout(() => {
+  renderHomeBlog();
+}, 100);
+</script>
+</body>
+</html>
